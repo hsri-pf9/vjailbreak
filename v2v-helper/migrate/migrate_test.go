@@ -5,9 +5,10 @@ import (
 	"context"
 	"testing"
 	"time"
-	"v2v-helper/nbd"
-	"v2v-helper/openstack"
-	"v2v-helper/vm"
+
+	"github.com/platform9/vjailbreak/v2v-helper/nbd"
+	"github.com/platform9/vjailbreak/v2v-helper/openstack"
+	"github.com/platform9/vjailbreak/v2v-helper/vm"
 
 	"github.com/golang/mock/gomock"
 	"github.com/gophercloud/gophercloud/openstack/blockstorage/v3/volumes"

@@ -9,12 +9,13 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"v2v-helper/migrate"
-	"v2v-helper/nbd"
-	"v2v-helper/openstack"
-	"v2v-helper/reporter"
-	"v2v-helper/vcenter"
-	"v2v-helper/vm"
+
+	"github.com/platform9/vjailbreak/v2v-helper/migrate"
+	"github.com/platform9/vjailbreak/v2v-helper/nbd"
+	"github.com/platform9/vjailbreak/v2v-helper/openstack"
+	"github.com/platform9/vjailbreak/v2v-helper/reporter"
+	"github.com/platform9/vjailbreak/v2v-helper/vcenter"
+	"github.com/platform9/vjailbreak/v2v-helper/vm"
 )
 
 func removeEmptyStrings(slice []string) []string {

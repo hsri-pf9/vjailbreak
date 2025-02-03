@@ -7,7 +7,8 @@ import (
 	"log"
 	"net/url"
 	"testing"
-	"v2v-helper/vcenter"
+
+	"github.com/platform9/vjailbreak/v2v-helper/vcenter"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/vmware/govmomi"

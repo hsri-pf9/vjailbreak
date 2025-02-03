@@ -10,8 +10,9 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-	"v2v-helper/pkg/constants"
-	"v2v-helper/vm"
+
+	"github.com/platform9/vjailbreak/v2v-helper/pkg/constants"
+	"github.com/platform9/vjailbreak/v2v-helper/vm"
 
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack/blockstorage/extensions/volumeactions"
