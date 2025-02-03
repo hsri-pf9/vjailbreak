@@ -15,7 +15,7 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
-	"vjailbreak/vm"
+	"v2v-helper/vm"
 
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
