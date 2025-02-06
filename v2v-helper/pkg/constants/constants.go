@@ -16,4 +16,11 @@ systemctl enable --now serial-getty@ttyS0.service`
 
 	// Number of intervals to wait for the volume to become available
 	MaxIntervalCount = 12
+
+	EventMessageConvertingDisk                    = "Converting disk"
+	EventMessageWaitingForCutOverStart            = "Waiting for VM Cutover start time"
+	EventMessageCopyingChangedBlocksWithIteration = "Copying changed blocks"
+	EventMessageWaitingForDataCopyStart           = "Waiting for data copy start time"
+	EventMessageDataCopyStart                     = "Data copy start time reached"
+	EventMessageWaitingForAdminCutOver            = "Waiting for Admin Cutover conditions to be met"
 )

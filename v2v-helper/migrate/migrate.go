@@ -83,13 +83,12 @@ func (migobj *Migrate) CreateVolumes(vminfo vm.VMInfo) (vm.VMInfo, error) {
 			}
 		}
 	}
-	migobj.logMessage("Volumes created successfully")
 	return vminfo, nil
 }
 
 func (migobj *Migrate) AttachVolume(disk vm.VMDisk) (string, error) {
 	openstackops := migobj.Openstackclients
-	migobj.logMessage("Attaching volumes to VM")
+	log.Println("Attaching volumes to VM")
 
 	err := openstackops.AttachVolumeToVM(disk.OpenstackVol.ID)
 	if err != nil {
@@ -169,7 +168,7 @@ func (migobj *Migrate) EnableCBTWrapper() error {
 		if err != nil {
 			return fmt.Errorf("failed to check if CBT is enabled: %s", err)
 		}
-		migobj.logMessage("Creating temporary snapshot of the source VM")
+		log.Println("Creating temporary snapshot of the source VM")
 		err = vmops.TakeSnapshot("tmp-snap")
 		if err != nil {
 			return fmt.Errorf("failed to take snapshot of source VM: %s", err)
@@ -179,8 +178,8 @@ func (migobj *Migrate) EnableCBTWrapper() error {
 		if err != nil {
 			return fmt.Errorf("failed to delete snapshot of source VM: %s", err)
 		}
-		fmt.Println("Snapshot deleted successfully")
-		migobj.logMessage("CBT enabled successfully")
+		log.Println("Snapshot deleted successfully")
+		log.Println("CBT enabled successfully")
 	}
 	return nil
 }
@@ -188,7 +187,7 @@ func (migobj *Migrate) EnableCBTWrapper() error {
 func (migobj *Migrate) WaitforCutover() error {
 	var zerotime time.Time
 	if !migobj.MigrationTimes.VMCutoverStart.Equal(zerotime) && migobj.MigrationTimes.VMCutoverStart.After(time.Now()) {
-		migobj.logMessage("Waiting for VM Cutover start time")
+		migobj.logMessage(constants.EventMessageWaitingForCutOverStart)
 		time.Sleep(time.Until(migobj.MigrationTimes.VMCutoverStart))
 		migobj.logMessage("VM Cutover start time reached")
 	} else {
@@ -200,7 +199,7 @@ func (migobj *Migrate) WaitforCutover() error {
 }
 
 func (migobj *Migrate) WaitforAdminCutover() error {
-	migobj.logMessage("Waiting for Cutover conditions to be met")
+	migobj.logMessage(constants.EventMessageWaitingForAdminCutOver)
 	for {
 		label := <-migobj.PodLabelWatcher
 		migobj.logMessage(fmt.Sprintf("Label: %s", label))
@@ -238,6 +237,8 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 	}
 
 	for idx, vmdisk := range vminfo.VMDisks {
+		// Send event for each disk that copy has started and progress is 0%
+		migobj.logMessage(fmt.Sprintf("Copying disk %d, Completed: %d%%", idx, 0))
 		err := nbdops[idx].StartNBDServer(vmops.GetVMObj(), envURL, envUserName, envPassword, thumbprint, vmdisk.Snapname, vmdisk.SnapBackingDisk, migobj.EventReporter)
 		if err != nil {
 			return vminfo, fmt.Errorf("failed to start NBD server: %s", err)
@@ -252,7 +253,6 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 		// If its the first copy, copy the entire disk
 		if incrementalCopyCount == 0 {
 			for idx, vmdisk := range vminfo.VMDisks {
-				migobj.logMessage(fmt.Sprintf("Copying disk %d", idx))
 
 				vminfo.VMDisks[idx].Path, err = migobj.AttachVolume(vmdisk)
 				if err != nil {
@@ -270,6 +270,7 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 				migobj.logMessage(fmt.Sprintf("Disk %d copied successfully: %s", idx, vminfo.VMDisks[idx].Path))
 			}
 		} else {
+			migobj.logMessage(fmt.Sprintf("%s, iteration %d", constants.EventMessageCopyingChangedBlocksWithIteration, incrementalCopyCount))
 			migration_snapshot, err := vmops.GetSnapshot("migration-snap")
 			if err != nil {
 				return vminfo, fmt.Errorf("failed to get snapshot: %s", err)
@@ -285,7 +286,7 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 				}
 
 				if len(changedAreas.ChangedArea) == 0 {
-					migobj.logMessage(fmt.Sprintf("Disk %d: No changed blocks found. Skipping copy", idx))
+					log.Println(fmt.Sprintf("Disk %d: No changed blocks found. Skipping copy", idx))
 				} else {
 					migobj.logMessage(fmt.Sprintf("Disk %d: Blocks have Changed.", idx))
 
@@ -304,7 +305,6 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 
 					// 11. Copy Changed Blocks over
 					done = false
-					migobj.logMessage("Copying changed blocks")
 					vminfo.VMDisks[idx].Path, err = migobj.AttachVolume(vmdisk)
 					if err != nil {
 						return vminfo, fmt.Errorf("failed to attach volume: %s", err)
@@ -317,10 +317,10 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 					if err != nil {
 						return vminfo, fmt.Errorf("failed to detach volume: %s", err)
 					}
-					migobj.logMessage("Finished copying changed blocks")
 				}
 			}
 			if final {
+				migobj.logMessage("Finished copying changed blocks")
 				break
 			}
 			if done || incrementalCopyCount > 20 {
@@ -376,7 +376,7 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 }
 
 func (migobj *Migrate) ConvertVolumes(ctx context.Context, vminfo vm.VMInfo) error {
-	migobj.logMessage("Converting disk")
+	migobj.logMessage(constants.EventMessageConvertingDisk)
 	osRelease := ""
 	bootVolumeIndex := 0
 	getBootCommand := ""
@@ -681,9 +681,9 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 	// Wait until the data copy start time
 	var zerotime time.Time
 	if !migobj.MigrationTimes.DataCopyStart.Equal(zerotime) && migobj.MigrationTimes.DataCopyStart.After(time.Now()) {
-		migobj.logMessage("Waiting for data copy start time")
+		migobj.logMessage(constants.EventMessageWaitingForDataCopyStart)
 		time.Sleep(time.Until(migobj.MigrationTimes.DataCopyStart))
-		migobj.logMessage("Data copy start time reached")
+		migobj.logMessage(constants.EventMessageDataCopyStart)
 	}
 	// Get Info about VM
 	vminfo, err := migobj.VMops.GetVMInfo(migobj.Ostype)
