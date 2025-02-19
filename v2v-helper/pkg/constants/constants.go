@@ -24,6 +24,6 @@ systemctl enable --now serial-getty@ttyS0.service`
 	EventMessageDataCopyStart                     = "Data copy start time reached"
 	EventMessageWaitingForAdminCutOver            = "Waiting for Admin Cutover conditions to be met"
 	EventMessageMigrationSucessful                = "VM created successfully"
-	EventMessageMigrationFailed                   = "Failed to migrate VM"
+	EventMessageMigrationFailed                   = "Trying to perform cleanup"
 	EventMessageCopyingDisk                       = "Copying disk"
 )
