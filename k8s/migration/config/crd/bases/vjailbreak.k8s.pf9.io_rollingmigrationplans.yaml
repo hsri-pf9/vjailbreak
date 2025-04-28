@@ -40,6 +40,34 @@ spec:
           spec:
             description: RollingMigrationPlanSpec defines the desired state of RollingMigrationPlan
             properties:
+              bmConfigRef:
+                description: BMConfigRef is the reference to the BMC credentials
+                properties:
+                  name:
+                    default: ""
+                    description: |-
+                      Name of the referent.
+                      This field is effectively required, but due to backwards compatibility is
+                      allowed to be empty. Instances of this type with an empty value here are
+                      almost certainly wrong.
+                      More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                    type: string
+                type: object
+                x-kubernetes-map-type: atomic
+              cloudInitConfigRef:
+                description: CloudInitConfigRef is the reference to the cloud-init
+                  configuration
+                properties:
+                  name:
+                    description: name is unique within a namespace to reference a
+                      secret resource.
+                    type: string
+                  namespace:
+                    description: namespace defines the space within which the secret
+                      name must be unique.
+                    type: string
+                type: object
+                x-kubernetes-map-type: atomic
               clusterSequence:
                 description: ClusterSequence is the sequence of vCenter clusters to
                   be migrated
@@ -63,7 +91,6 @@ spec:
                               to be migrated
                             type: string
                         required:
-                        - esxiName
                         - vmName
                         type: object
                       type: array
@@ -101,6 +128,7 @@ spec:
                 type: object
                 x-kubernetes-map-type: atomic
             required:
+            - bmConfigRef
             - clusterSequence
             - openstackCredsRef
             - vmwareCredsRef
