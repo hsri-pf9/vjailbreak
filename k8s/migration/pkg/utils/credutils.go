@@ -1222,3 +1222,12 @@ func DeleteVMwareHostsForVMwareCreds(ctx context.Context, scope *scope.VMwareCre
 	}
 	return nil
 }
+
+func containsString(slice []string, value string) bool {
+	for _, item := range slice {
+		if item == value {
+			return true
+		}
+	}
+	return false
+}
