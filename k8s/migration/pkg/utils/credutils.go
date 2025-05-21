@@ -851,7 +851,6 @@ func GetClosestFlavour(cpu, memory int, computeClient *gophercloud.ServiceClient
 	if bestFlavor.VCPUs != constants.MaxVCPUs {
 		return bestFlavor, nil
 	}
-
 	return nil, fmt.Errorf("no suitable flavor found for %d vCPUs and %d MB RAM", cpu, memory)
 }
 
