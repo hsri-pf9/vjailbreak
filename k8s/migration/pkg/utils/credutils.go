@@ -988,21 +988,6 @@ func DeleteVMwarecredsSecret(ctx context.Context, scope *scope.VMwareCredsScope)
 	return nil
 }
 
-func DeleteVMwarecredsSecret(ctx context.Context, scope *scope.VMwareCredsScope) error {
-	secret := corev1.Secret{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      scope.VMwareCreds.Spec.SecretRef.Name,
-			Namespace: constants.NamespaceMigrationSystem,
-		},
-	}
-	if err := scope.Client.Delete(ctx, &secret); err != nil {
-		if !apierrors.IsNotFound(err) {
-			return errors.Wrap(err, "failed to delete associated secret")
-		}
-	}
-	return nil
-}
-
 func DeleteVMwareMachinesForVMwareCreds(ctx context.Context, scope *scope.VMwareCredsScope) error {
 	vmList, err := FilterVMwareMachinesForCreds(ctx, scope.Client, scope.VMwareCreds)
 	if err != nil {
