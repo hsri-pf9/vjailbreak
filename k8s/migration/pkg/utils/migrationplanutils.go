@@ -12,6 +12,7 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/pkg/errors"
 	vjailbreakv1alpha1 "github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1"
 	corev1 "k8s.io/api/core/v1"
 
@@ -31,13 +32,16 @@ func GetMigrationConfigMapName(vmname string) string {
 
 // ConvertToK8sName converts a name to be Kubernetes-compatible
 func ConvertToK8sName(name string) (string, error) {
+	if name == "" {
+		return "", errors.New("name cannot be empty")
+	}
 	// Convert to lowercase
 	name = strings.ToLower(name)
-	// Replace separators with hyphens
-	re := regexp.MustCompile(`[_\s]`)
+	// Replace separators with hyphens (underscores, dots, and spaces)
+	re := regexp.MustCompile(`[_\s\.]`)
 	name = re.ReplaceAllString(name, "-")
-	// Remove all characters that are not lowercase alphanumeric, hyphens, or periods
-	re = regexp.MustCompile(`[^a-z0-9\-.]`)
+	// Remove all characters that are not lowercase alphanumeric or hyphens
+	re = regexp.MustCompile(`[^a-z0-9\-]`)
 	name = re.ReplaceAllString(name, "")
 	// Remove leading and trailing hyphens
 	name = strings.Trim(name, "-")

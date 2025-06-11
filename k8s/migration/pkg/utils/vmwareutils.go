@@ -1,6 +1,9 @@
 // Package utils provides utility functions for handling migration-related operations.
 // It includes functions for working with VMware environments, ESXi hosts, VM management,
 // and integration with Platform9 components for migration workflows.
+//
+// This file contains the core VMware utility functions that are used by the
+// VMwareUtils implementation of the VMwareUtilsInterface.
 package utils
 
 import (
@@ -16,6 +19,41 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
+
+// VMwareUtilsInterface defines the interface for VMware utility operations.
+type VMwareUtilsInterface interface {
+	// GetVMwareClustersAndHosts retrieves VMware cluster and host information
+	GetVMwareClustersAndHosts(ctx context.Context, k3sclient client.Client, scope *scope.VMwareCredsScope) ([]VMwareClusterInfo, error)
+
+	// CreateVMwareClustersAndHosts creates k8s resources representing VMware clusters and hosts
+	CreateVMwareClustersAndHosts(ctx context.Context, k3sclient client.Client, scope *scope.VMwareCredsScope) error
+
+	// DeleteStaleVMwareClustersAndHosts deletes stale VMware cluster and host resources
+	DeleteStaleVMwareClustersAndHosts(ctx context.Context, k3sclient client.Client, scope *scope.VMwareCredsScope) error
+}
+
+// VMwareUtils implements the VMwareUtilsInterface
+type VMwareUtils struct{}
+
+// NewVMwareUtils creates a new VMwareUtils instance
+func NewVMwareUtils() VMwareUtilsInterface {
+	return &VMwareUtils{}
+}
+
+// GetVMwareClustersAndHosts delegates to the package function
+func (v *VMwareUtils) GetVMwareClustersAndHosts(ctx context.Context, k3sclient client.Client, scope *scope.VMwareCredsScope) ([]VMwareClusterInfo, error) {
+	return GetVMwareClustersAndHosts(ctx, k3sclient, scope)
+}
+
+// CreateVMwareClustersAndHosts delegates to the package function
+func (v *VMwareUtils) CreateVMwareClustersAndHosts(ctx context.Context, k3sclient client.Client, scope *scope.VMwareCredsScope) error {
+	return CreateVMwareClustersAndHosts(ctx, k3sclient, scope)
+}
+
+// DeleteStaleVMwareClustersAndHosts delegates to the package function
+func (v *VMwareUtils) DeleteStaleVMwareClustersAndHosts(ctx context.Context, k3sclient client.Client, scope *scope.VMwareCredsScope) error {
+	return DeleteStaleVMwareClustersAndHosts(ctx, k3sclient, scope)
+}
 
 // VMwareHostInfo represents a host in a VMware cluster.
 // It contains essential information about a VMware ESXi host.
