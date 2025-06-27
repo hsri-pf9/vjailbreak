@@ -43,6 +43,7 @@ type OpenstackOperations interface {
 	CreatePort(networkid *networks.Network, mac, ip, vmname string) (*ports.Port, error)
 	CreateVM(flavor *flavors.Flavor, networkIDs, portIDs []string, vminfo vm.VMInfo, availabilityZone string) (*servers.Server, error)
 	DeleteVolume(volumeID string) error
+	DeleteServer(serverID string) error
 	FindDevice(volumeID string) (string, error)
 	WaitUntilVMActive(vmID string) (bool, error)
 }

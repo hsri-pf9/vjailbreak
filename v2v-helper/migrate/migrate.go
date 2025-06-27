@@ -650,6 +650,7 @@ func (migobj *Migrate) CreateTargetInstance(vminfo vm.VMInfo) error {
 			break
 		}
 		if i == constants.MaxVMActiveCheckCount-1 {
+
 			return fmt.Errorf("VM is not active after %d retries", constants.MaxVMActiveCheckCount)
 		}
 		time.Sleep(constants.VMActiveCheckInterval)
@@ -661,6 +662,15 @@ func (migobj *Migrate) CreateTargetInstance(vminfo vm.VMInfo) error {
 		err = migobj.HealthCheck(vminfo, ipaddresses)
 		if err != nil {
 			migobj.logMessage(fmt.Sprintf("Health Check failed: %s", err))
+			
+			// Delete the VM and ignore any errors that occur during deletion
+			deleteErr := migobj.Openstackclients.DeleteServer(newVM.ID)
+			if deleteErr != nil {
+				migobj.logMessage(fmt.Sprintf("Failed to delete VM after health check failure, ignoring: %s", deleteErr))
+			} else {
+				migobj.logMessage(fmt.Sprintf("Successfully deleted VM %s after health check failure", newVM.ID))
+			}
+			return fmt.Errorf("health check failed: %s", err)
 		}
 	} else {
 		migobj.logMessage("Skipping Health Checks")

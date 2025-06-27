@@ -24,7 +24,7 @@ systemctl enable --now serial-getty@ttyS0.service`
 	XMLFileName              = "libxml.xml"
 	MigrationSnapshotName    = "migration-snap"
 	MaxHTTPRetryCount        = 5
-	MaxVMActiveCheckCount    = 15
+	MaxVMActiveCheckCount    = 30
 	VMActiveCheckInterval    = 20 * time.Second
 	MigrationSystemNamespace = "migration-system"
 	TrueString               = "true"

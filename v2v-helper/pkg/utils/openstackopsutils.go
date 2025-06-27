@@ -122,6 +122,14 @@ func (osclient *OpenStackClients) DeleteVolume(volumeID string) error {
 	return nil
 }
 
+func (osclient *OpenStackClients) DeleteServer(serverID string) error {
+	err := servers.Delete(osclient.ComputeClient, serverID).ExtractErr()
+	if err != nil {
+		return fmt.Errorf("failed to delete server: %s", err)
+	}
+	return nil
+}
+
 func (osclient *OpenStackClients) WaitForVolume(volumeID string) error {
 	for i := 0; i < constants.MaxIntervalCount; i++ {
 		volume, err := volumes.Get(osclient.BlockStorageClient, volumeID).Extract()
