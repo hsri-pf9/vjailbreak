@@ -139,11 +139,21 @@ func VMOpsBuilder(ctx context.Context, vcclient vcenter.VCenterClient, name stri
 
 }
 
+// ensureVCenterAuthenticated ensures the vCenter client is authenticated before proceeding
+func (vmops *VMOps) ensureVCenterAuthenticated(ctx context.Context) error {
+	return vmops.vcclient.EnsureAuthenticated(ctx)
+}
+
 func (vmops *VMOps) GetVMObj() *object.VirtualMachine {
 	return vmops.VMObj
 }
 
 func (vmops *VMOps) GetVMInfo(ostype string) (VMInfo, error) {
+	// Check if vCenter client is authenticated before proceeding
+	if err := vmops.ensureVCenterAuthenticated(vmops.ctx); err != nil {
+		return VMInfo{}, fmt.Errorf("authentication check failed: %v", err)
+	}
+
 	vm := vmops.VMObj
 
 	var o mo.VirtualMachine
@@ -258,6 +268,11 @@ func getChangeID(disk *types.VirtualDisk) (*ChangeID, error) {
 }
 
 func (vmops *VMOps) UpdateDisksInfo(vminfo *VMInfo) error {
+	// Check if vCenter client is authenticated before proceeding
+	if err := vmops.ensureVCenterAuthenticated(vmops.ctx); err != nil {
+		return fmt.Errorf("authentication check failed: %v", err)
+	}
+
 	pc := vmops.vcclient.VCPropertyCollector
 	vm := vmops.VMObj
 	var snapbackingdisk []string
@@ -309,6 +324,11 @@ func (vmops *VMOps) UpdateDisksInfo(vminfo *VMInfo) error {
 }
 
 func (vmops *VMOps) UpdateDiskInfo(vminfo *VMInfo, disk VMDisk, blockCopySuccess bool) error {
+	// Check if vCenter client is authenticated before proceeding
+	if err := vmops.ensureVCenterAuthenticated(vmops.ctx); err != nil {
+		return fmt.Errorf("authentication check failed: %v", err)
+	}
+
 	pc := vmops.vcclient.VCPropertyCollector
 	vm := vmops.VMObj
 	var snapbackingdisk []string
@@ -363,6 +383,11 @@ func (vmops *VMOps) UpdateDiskInfo(vminfo *VMInfo, disk VMDisk, blockCopySuccess
 }
 
 func (vmops *VMOps) IsCBTEnabled() (bool, error) {
+	// Check if vCenter client is authenticated before proceeding
+	if err := vmops.ensureVCenterAuthenticated(vmops.ctx); err != nil {
+		return false, fmt.Errorf("authentication check failed: %v", err)
+	}
+
 	vm := vmops.VMObj
 	var o mo.VirtualMachine
 	err := vm.Properties(vmops.ctx, vm.Reference(), []string{"config.changeTrackingEnabled"}, &o)
@@ -686,6 +711,11 @@ func copyRDMDisks(vminfo *VMInfo, rdmDiskInfo *vjailbreakv1alpha1.VMwareMachine)
 	}
 }
 func (vmops *VMOps) ListSnapshots() ([]types.VirtualMachineSnapshotTree, error) {
+	// Check if vCenter client is authenticated before proceeding
+	if err := vmops.ensureVCenterAuthenticated(vmops.ctx); err != nil {
+		return nil, fmt.Errorf("authentication check failed: %v", err)
+	}
+
 	vm := vmops.VMObj
 	var o mo.VirtualMachine
 	err := vm.Properties(vmops.ctx, vm.Reference(), []string{"snapshot"}, &o)

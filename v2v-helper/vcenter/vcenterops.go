@@ -13,6 +13,7 @@ import (
 	"github.com/vmware/govmomi/find"
 	"github.com/vmware/govmomi/object"
 	"github.com/vmware/govmomi/property"
+	"github.com/vmware/govmomi/session"
 	"github.com/vmware/govmomi/session/cache"
 	"github.com/vmware/govmomi/vim25"
 	"github.com/vmware/govmomi/vim25/types"
@@ -23,13 +24,20 @@ import (
 type VCenterOperations interface {
 	getDatacenters(ctx context.Context) ([]*object.Datacenter, error)
 	GetVMByName(ctx context.Context, name string) (*object.VirtualMachine, error)
+	IsAuthenticated(ctx context.Context) bool
+	RecreateClient(ctx context.Context) error
+	EnsureAuthenticated(ctx context.Context) error
 }
 
 type VCenterClient struct {
-	VCClient           *vim25.Client
-	VCFinder          *find.Finder
+	VCClient            *vim25.Client
+	VCFinder            *find.Finder
 	VCPropertyCollector *property.Collector
-	Session            *cache.Session
+	// Store credentials for client recreation
+	username               string
+	password               string
+	host                   string
+	disableSSLVerification bool
 }
 
 func validateVCenter(ctx context.Context, username, password, host string, disableSSLVerification bool) (*vim25.Client, *cache.Session, error) {
@@ -76,7 +84,7 @@ func VCenterClientBuilder(ctx context.Context, username, password, host string, 
 	}
 	finder := find.NewFinder(client, false)
 	pc := property.DefaultCollector(client)
-	return &VCenterClient{VCClient: client, VCFinder: finder, VCPropertyCollector: pc, Session: session}, nil
+	return &VCenterClient{VCClient: client, VCFinder: finder, VCPropertyCollector: pc, username: username, password: password, host: host, disableSSLVerification: disableSSLVerification}, nil
 }
 
 func GetThumbprint(host string) (string, error) {
@@ -109,6 +117,55 @@ func GetThumbprint(host string) (string, error) {
 
 	// Return the thumbprint as a hexadecimal string
 	return thumbprint, nil
+}
+
+// IsAuthenticated checks if the vCenter client is still authenticated
+func (vcclient *VCenterClient) IsAuthenticated(ctx context.Context) bool {
+	if vcclient.VCClient == nil {
+		return false
+	}
+
+	// Try to get the current session to check authentication
+	sessionManager := session.NewManager(vcclient.VCClient)
+	_, err := sessionManager.UserSession(ctx)
+	return err == nil
+}
+
+// RecreateClient recreates the vCenter client when authentication fails
+func (vcclient *VCenterClient) RecreateClient(ctx context.Context) error {
+	// Close existing connections
+	if vcclient.VCClient != nil {
+		vcclient.VCClient.CloseIdleConnections()
+	}
+
+	// Recreate the client using stored credentials
+	client, err := validateVCenter(ctx, vcclient.username, vcclient.password, vcclient.host, vcclient.disableSSLVerification)
+	if err != nil {
+		return fmt.Errorf("failed to recreate vCenter client: %v", err)
+	}
+
+	// Update the client components
+	vcclient.VCClient = client
+	vcclient.VCFinder = find.NewFinder(client, false)
+	vcclient.VCPropertyCollector = property.DefaultCollector(client)
+
+	return nil
+}
+
+// EnsureAuthenticated ensures the vCenter client is authenticated, recreating if necessary
+func (vcclient *VCenterClient) EnsureAuthenticated(ctx context.Context) error {
+	if !vcclient.IsAuthenticated(ctx) {
+		// Try to recreate the client
+		if err := vcclient.RecreateClient(ctx); err != nil {
+			return fmt.Errorf("failed to recreate vCenter client: %v", err)
+		}
+
+		// Check authentication again after recreation
+		if !vcclient.IsAuthenticated(ctx) {
+			return fmt.Errorf("vCenter client is still not authenticated after recreation")
+		}
+	}
+	return nil
 }
 
 // Get all datacenters

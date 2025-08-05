@@ -81,3 +81,32 @@ func TestGetThumbprint(t *testing.T) {
 	assert.ErrorContains(t, err, "failed to connect to vCenter")
 	assert.Empty(t, thumbprint)
 }
+
+func TestRecreateClient(t *testing.T) {
+	simVC, model, server, err := simulateVCenter()
+	defer cleanupSimulator(model, server)
+	assert.Nil(t, err)
+
+	// Test client recreation
+	ctx := context.Background()
+	err = simVC.RecreateClient(ctx)
+	assert.Nil(t, err)
+
+	// Verify client is still working after recreation
+	assert.True(t, simVC.IsAuthenticated(ctx))
+}
+
+func TestEnsureAuthenticated(t *testing.T) {
+	simVC, model, server, err := simulateVCenter()
+	defer cleanupSimulator(model, server)
+	assert.Nil(t, err)
+
+	ctx := context.Background()
+
+	// Test authentication check
+	err = simVC.EnsureAuthenticated(ctx)
+	assert.Nil(t, err)
+
+	// Verify client is authenticated
+	assert.True(t, simVC.IsAuthenticated(ctx))
+}
