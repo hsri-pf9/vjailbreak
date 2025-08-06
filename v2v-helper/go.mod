@@ -2,6 +2,8 @@ module github.com/platform9/vjailbreak/v2v-helper
 
 go 1.24.0
 
+replace github.com/vmware/govmomi => github.com/vmware/govmomi v0.39.0
+
 require (
 	github.com/golang/mock v1.6.0
 	github.com/gophercloud/gophercloud v1.14.1
