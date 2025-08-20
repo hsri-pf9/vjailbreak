@@ -503,23 +503,29 @@ func (r *MigrationPlanReconciler) CreateJob(ctx context.Context,
 	firstbootconfigMapName string,
 	vmwareSecretRef string,
 	openstackSecretRef string) error {
+	ctxlog := r.ctxlog.WithValues("migrationplan", migrationplan.Name)
+	ctxlog.Info("DEBUG: Creating job for VM", "vm", vm)
 	vmwarecreds, err := utils.GetVMwareCredsNameFromMigrationPlan(ctx, r.Client, migrationplan)
 	if err != nil {
 		return errors.Wrap(err, "failed to get vmware credentials")
 	}
+	ctxlog.Info("DEBUG: Getting vmware credentials for VM", "vm", vm)
 	vmk8sname, err := utils.GetK8sCompatibleVMWareObjectName(vm, vmwarecreds)
 	if err != nil {
 		return errors.Wrap(err, "failed to get vm name")
 	}
+	ctxlog.Info("DEBUG: Getting job name for VM", "vm", vm)
 	jobName, err := utils.GetJobNameForVMName(vm, vmwarecreds)
 	if err != nil {
 		return errors.Wrap(err, "failed to get job name")
 	}
+	ctxlog.Info("DEBUG: Getting job name for VM", "vm", vm)
 	pointtrue := true
 	cutoverlabel := "yes"
 	if migrationplan.Spec.MigrationStrategy.AdminInitiatedCutOver {
 		cutoverlabel = "no"
 	}
+	ctxlog.Info("DEBUG: Getting job name for VM", "vm", vm)
 	envVars := []corev1.EnvVar{
 		{
 			Name: "POD_NAME",
@@ -534,6 +540,7 @@ func (r *MigrationPlanReconciler) CreateJob(ctx context.Context,
 			Value: vmk8sname,
 		},
 	}
+	ctxlog.Info("DEBUG: Getting job name for VM", "vm", vm)
 	job := &batchv1.Job{}
 	err = r.Get(ctx, types.NamespacedName{Name: jobName, Namespace: migrationplan.Namespace}, job)
 	if err != nil && apierrors.IsNotFound(err) {
@@ -690,10 +697,12 @@ func (r *MigrationPlanReconciler) CreateJob(ctx context.Context,
 				},
 			},
 		}
+		ctxlog.Info("DEBUG: Creating job for VM", "vm", vm)
 		if err := r.createResource(ctx, migrationobj, job); err != nil {
 			r.ctxlog.Error(err, fmt.Sprintf("Failed to create Job '%s'", jobName))
 			return errors.Wrap(err, fmt.Sprintf("failed to create job '%s'", jobName))
 		}
+		ctxlog.Info("DEBUG: Job created for VM", "vm", vm)
 	}
 	return nil
 }
@@ -1019,6 +1028,8 @@ func (r *MigrationPlanReconciler) TriggerMigration(ctx context.Context,
 		fbcm *corev1.ConfigMap
 	)
 
+	ctxlog.Info("DEBUG: Triggering migration for VMs")
+
 	nodeList := &corev1.NodeList{}
 	err := r.List(ctx, nodeList)
 	if err != nil {
@@ -1035,6 +1046,7 @@ func (r *MigrationPlanReconciler) TriggerMigration(ctx context.Context,
 
 	var vmMachineObj *vjailbreakv1alpha1.VMwareMachine
 	for _, vm := range parallelvms {
+		ctxlog.Info("DEBUG: Triggering migration for VM", "vm", vm)
 		vmMachineObj = nil
 		for i := range vmMachines.Items {
 			if vmMachines.Items[i].Spec.VMInfo.Name == vm {
@@ -1045,6 +1057,7 @@ func (r *MigrationPlanReconciler) TriggerMigration(ctx context.Context,
 		if vmMachineObj == nil {
 			return errors.Wrapf(err, "VM '%s' not found in VMwareMachine", vm)
 		}
+		ctxlog.Info("DEBUG: Creating migration for VM", "vm", vm)
 		migrationobj, err := r.CreateMigration(ctx, migrationplan, vm, vmMachineObj)
 		if err != nil {
 			if apierrors.IsAlreadyExists(err) && migrationobj.Status.Phase == vjailbreakv1alpha1.VMMigrationPhaseSucceeded {
@@ -1054,19 +1067,22 @@ func (r *MigrationPlanReconciler) TriggerMigration(ctx context.Context,
 			return errors.Wrapf(err, "failed to create Migration for VM %s", vm)
 		}
 		migrationobjs.Items = append(migrationobjs.Items, *migrationobj)
+		ctxlog.Info("DEBUG: Creating migration config map for VM", "vm", vm)
 		_, err = r.CreateMigrationConfigMap(ctx, migrationplan, migrationtemplate, migrationobj, openstackcreds, vmwcreds, vm, vmMachineObj)
 		if err != nil {
 			return errors.Wrapf(err, "failed to create ConfigMap for VM %s", vm)
 		}
+		ctxlog.Info("DEBUG: Creating firstboot config map for VM", "vm", vm)
 		fbcm, err = r.CreateFirstbootConfigMap(ctx, migrationplan, vm)
 		if err != nil {
 			return errors.Wrapf(err, "failed to create Firstboot ConfigMap for VM %s", vm)
 		}
+		ctxlog.Info("DEBUG: Validating VDDK presence for VM", "vm", vm)
 		//nolint:gocritic // err is already declared above
 		if err = r.validateVDDKPresence(ctx, migrationobj, ctxlog); err != nil {
 			return err
 		}
-
+		ctxlog.Info("DEBUG: Creating job for VM", "vm", vm)
 		err = r.CreateJob(ctx,
 			migrationplan,
 			migrationobj,
@@ -1078,7 +1094,7 @@ func (r *MigrationPlanReconciler) TriggerMigration(ctx context.Context,
 			return errors.Wrap(err, fmt.Sprintf("failed to create Job for VM %s", vm))
 		}
 		counter--
-
+		ctxlog.Info("DEBUG: Job created for VM", "vm", vm)
 		if counter == 0 {
 			// Control the number of VMs in parallel
 			counter = len(nodeList.Items)
