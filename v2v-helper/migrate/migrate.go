@@ -344,6 +344,12 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 				}
 			}
 		} else {
+			vcenterSettings, err := utils.GetVjailbreakSettings(ctx, migobj.K8sClient)
+			if err != nil {
+				return vminfo, errors.Wrap(err, "failed to get vcenter settings")
+			}
+			utils.PrintLog(fmt.Sprintf("Fetched vjailbreak settings for Changed Blocks Copy Iteration Threshold: %d", vcenterSettings.ChangedBlocksCopyIterationThreshold))
+
 			migration_snapshot, err := vmops.GetSnapshot(constants.MigrationSnapshotName)
 			if err != nil {
 				return vminfo, errors.Wrap(err, "failed to get snapshot")
@@ -409,7 +415,7 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 			if final {
 				break
 			}
-			if done || incrementalCopyCount > vcenterSettings.ChangedBlocksCopyIterationThreshold {
+			if done || incrementalCopyCount >= vcenterSettings.ChangedBlocksCopyIterationThreshold {
 				if err := migobj.WaitforCutover(); err != nil {
 					return vminfo, errors.Wrap(err, "failed to start VM Cutover")
 				}
@@ -441,6 +447,8 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 		incrementalCopyCount += 1
 
 	}
+
+	time.Sleep(24 * time.Hour)
 
 	err = migobj.DetachAllVolumes(vminfo)
 	if err != nil {
