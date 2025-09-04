@@ -428,6 +428,8 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 				// 	return vminfo, errors.Wrap(err, "failed to power off VM")
 				// }
 				final = true
+				//TODO: remove break (Omkar)
+				break
 			}
 		}
 
@@ -525,7 +527,7 @@ func (migobj *Migrate) ConvertVolumes(ctx context.Context, vminfo vm.VMInfo) err
 
 	if len(vminfo.VMDisks) == 1 {
 		// if there is only one disk, then it has to be bootable
-		useSingleDisk = true
+		// useSingleDisk = true
 		bootVolumeIndex = 0
 	}
 
@@ -597,6 +599,13 @@ func (migobj *Migrate) ConvertVolumes(ctx context.Context, vminfo vm.VMInfo) err
 			if err != nil {
 				return errors.Wrap(err, "Failed to get bootable volume index")
 			}
+			// Get the installed os info
+			command := "inspect-os"
+			osPath, err := virtv2v.RunCommandInGuestAllDisksManual(vminfo.VMDisks, command, false)
+			if err != nil {
+				return errors.Wrap(err, "Failed to get os path")
+			}
+			utils.PrintLog(fmt.Sprintf("OS path: %s", osPath))
 		}
 	} else {
 		return errors.Errorf("unsupported OS type: %s", vminfo.OSType)
@@ -1107,6 +1116,7 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 		}
 		return errors.Wrap(err, "failed to live replicate disks")
 	}
+
 	// Import LUN and MigrateRDM disk
 	for idx, rdmDisk := range vminfo.RDMDisks {
 		volumeID, err := migobj.cinderManage(rdmDisk)
