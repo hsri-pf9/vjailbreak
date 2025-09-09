@@ -1144,7 +1144,7 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 	err = migobj.ConvertVolumes(ctx, vminfo)
 	if err != nil {
 		if !vcenterSettings.CleanupVolumesAfterConvertFailure {
-			migobj.logMessage("Cleanup volumes after convert failure is disabled, detaching volumes and cleaning up snapshots")
+			migobj.logMessage(fmt.Sprintf("Failed to convert volumes: %s, Cleanup volumes after convert failure is disabled, detaching volumes and cleaning up snapshots", err))
 			detachErr := migobj.DetachAllVolumes(vminfo)
 			if detachErr != nil {
 				utils.PrintLog(fmt.Sprintf("Failed to detach all volumes from VM: %s\n", detachErr))

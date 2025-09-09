@@ -189,19 +189,29 @@ func ConvertDisk(ctx context.Context, xmlFile, path, ostype, virtiowindriver str
 	os.Setenv("LIBGUESTFS_BACKEND", "direct")
 
 	// Step 3: Prepare virt-v2v args
-	args := []string{"-v", "--firstboot", "/home/fedora/scripts/user_firstboot.sh"}
+	args := []string{"-v", "-x", "--firstboot", "/home/fedora/scripts/user_firstboot.sh"}
 	for _, script := range firstbootscripts {
 		args = append(args, "--firstboot", fmt.Sprintf("/home/fedora/%s.sh", script))
 	}
 	if useSingleDisk {
-		args = append(args, "-i", "disk", diskPath)
+		// Always avoid interactive prompts: pick the first detected root
+		args = append(args, "-i", "disk", diskPath, "--root", "first")
 	} else {
-		args = append(args, "-i", "libvirtxml", xmlFile, "--root", path)
+		// Use libvirtxml and auto-select the first root to handle multi-boot cases
+		args = append(args, "-i", "libvirtxml", xmlFile, "--root", "first")
+	}
+
+	// Allow injecting extra virt-v2v arguments via environment for experimentation/workarounds
+	if extra := os.Getenv("V2V_EXTRA_ARGS"); strings.TrimSpace(extra) != "" {
+		args = append(args, strings.Fields(extra)...)
 	}
 
 	start := time.Now()
 	// Step 5: Run virt-v2v-in-place
 	cmd := exec.CommandContext(ctx, "virt-v2v-in-place", args...)
+	// Enable verbose libguestfs tracing when -x is present (we always include -x above)
+	cmd.Env = append(os.Environ(), "LIBGUESTFS_DEBUG=1", "LIBGUESTFS_TRACE=1")
+	log.Printf("virt-v2v-in-place args: %v", args)
 	log.Printf("Executing %s", cmd.String())
 
 	// Use the debug logging with proper file cleanup
