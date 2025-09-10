@@ -25,14 +25,17 @@ const STATUS_ORDER = {
 const PHASE_STEPS = {
     [Phase.Pending]: 1,
     [Phase.Validating]: 2,
-    [Phase.AwaitingDataCopyStart]: 3,
-    [Phase.CopyingBlocks]: 4,
-    [Phase.CopyingChangedBlocks]: 5,
-    [Phase.ConvertingDisk]: 6,
-    [Phase.AwaitingCutOverStartTime]: 7,
-    [Phase.AwaitingAdminCutOver]: 8,
-    [Phase.Succeeded]: 9,
-    [Phase.Failed]: 9,
+    [Phase.CreatingPorts]: 3,
+    [Phase.CreatingVolumes]: 4,
+    [Phase.AwaitingDataCopyStart]: 5,
+    [Phase.CopyingBlocks]: 6,
+    [Phase.CopyingChangedBlocks]: 7,
+    [Phase.ConvertingDisk]: 8,
+    [Phase.AwaitingCutOverStartTime]: 9,
+    [Phase.AwaitingAdminCutOver]: 10,
+    [Phase.CreatingVM]: 11,
+    [Phase.Succeeded]: 12,
+    [Phase.Failed]: 12,
 }
 
 const getProgressText = (phase: Phase | undefined, conditions: Condition[] | undefined) => {
@@ -41,7 +44,7 @@ const getProgressText = (phase: Phase | undefined, conditions: Condition[] | und
     }
 
     const stepNumber = PHASE_STEPS[phase] || 0;
-    const totalSteps = 9;
+    const totalSteps = 12;
 
     // Get the most recent condition's message
     const latestCondition = conditions?.sort((a, b) =>
