@@ -1068,6 +1068,9 @@ func (migobj *Migrate) gracefulTerminate(vminfo vm.VMInfo, cancel context.Cancel
 
 func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 	ctx, cancel := context.WithCancel(ctx)
+	networkids := []string{}
+	portids := []string{}
+	ipaddresses := []string{}
 	defer cancel()
 
 	// Get Info about VM
@@ -1078,8 +1081,9 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 	}
 
 	// Reserve ports for VM
+	// ReservePortsForVM takes care if user has provided network ports explicitly
 	migobj.logMessage(fmt.Sprintf("%s: %s", constants.EventMessageCreatingPorts, vminfo.Name))
-	networkids, portids, ipaddresses, err := migobj.ReservePortsForVM(&vminfo)
+	networkids, portids, ipaddresses, err = migobj.ReservePortsForVM(&vminfo)
 	if err != nil {
 		return errors.Wrap(err, "failed to reserve ports for VM")
 	}
