@@ -1117,6 +1117,9 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 		return errors.Wrap(err, "failed to reserve ports for VM")
 	}
 
+	//TODO(Omkar): Remove this after testing
+	migobj.logMessage(fmt.Sprintf("networkids: %v, portids: %v, ipaddresses: %v", networkids, portids, ipaddresses))
+
 	// Wait until the data copy start time
 	var zerotime time.Time
 	if !migobj.MigrationTimes.DataCopyStart.Equal(zerotime) && migobj.MigrationTimes.DataCopyStart.After(time.Now()) {
