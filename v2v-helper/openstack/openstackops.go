@@ -29,6 +29,7 @@ import (
 
 type OpenstackOperations interface {
 	CreateVolume(name string, size int64, ostype string, uefi bool, volumetype string, setRDMLabel bool) (*volumes.Volume, error)
+	GetVolume(volumeID string) (*volumes.Volume, error)
 	WaitForVolume(volumeID string) error
 	AttachVolumeToVM(volumeID string) error
 	WaitForVolumeAttachment(volumeID string) error

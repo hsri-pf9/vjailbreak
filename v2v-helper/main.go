@@ -145,6 +145,8 @@ func main() {
 		TenantName:             openstackProjectName,
 		Reporter:               eventReporter,
 		FallbackToDHCP:         migrationparams.FallbackToDHCP,
+		CopiedVolumeIDs:        utils.RemoveEmptyStrings(strings.Split(migrationparams.CopiedVolumeIDs, ",")),
+		ConvertedVolumeIDs:     utils.RemoveEmptyStrings(strings.Split(migrationparams.ConvertedVolumeIDs, ",")),
 	}
 
 	if err := migrationobj.MigrateVM(ctx); err != nil {

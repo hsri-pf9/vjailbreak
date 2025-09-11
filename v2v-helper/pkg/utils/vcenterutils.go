@@ -39,6 +39,8 @@ type MigrationParams struct {
 	SecurityGroups          string
 	RDMDisks                string
 	FallbackToDHCP          bool
+	CopiedVolumeIDs         string
+	ConvertedVolumeIDs      string
 }
 
 // GetMigrationParams is function that returns the migration parameters
@@ -79,5 +81,7 @@ func GetMigrationParams(ctx context.Context, client client.Client) (*MigrationPa
 		SecurityGroups:          string(configMap.Data["SECURITY_GROUPS"]),
 		RDMDisks:                string(configMap.Data["RDM_DISK_NAMES"]),
 		FallbackToDHCP:          string(configMap.Data["FALLBACK_TO_DHCP"]) == constants.TrueString,
+		CopiedVolumeIDs:         string(configMap.Data["COPIED_VOLUME_IDS"]),
+		ConvertedVolumeIDs:      string(configMap.Data["CONVERTED_VOLUME_IDS"]),
 	}, nil
 }
