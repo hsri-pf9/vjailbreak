@@ -1129,14 +1129,16 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 		migobj.Nbdops = append(migobj.Nbdops, &nbd.NBDServer{})
 	}
 
-	// Live Replicate Disks
-	vminfo, err = migobj.LiveReplicateDisks(ctx, vminfo)
-	if err != nil {
-		if cleanuperror := migobj.cleanup(vminfo, fmt.Sprintf("failed to live replicate disks: %s", err)); cleanuperror != nil {
-			// combine both errors
-			return errors.Wrapf(err, "failed to cleanup disks: %s", cleanuperror)
+	if len(migobj.CopiedVolumeIDs) == 0 && len(migobj.ConvertedVolumeIDs) == 0 {
+		// Live Replicate Disks only if no existing copied or converted volumes are provided
+		vminfo, err = migobj.LiveReplicateDisks(ctx, vminfo)
+		if err != nil {
+			if cleanuperror := migobj.cleanup(vminfo, fmt.Sprintf("failed to live replicate disks: %s", err)); cleanuperror != nil {
+				// combine both errors
+				return errors.Wrapf(err, "failed to cleanup disks: %s", cleanuperror)
+			}
+			return errors.Wrap(err, "failed to live replicate disks")
 		}
-		return errors.Wrap(err, "failed to live replicate disks")
 	}
 	vcenterSettings, err := k8sutils.GetVjailbreakSettings(ctx, migobj.K8sClient)
 	if err != nil {
@@ -1144,7 +1146,7 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 	}
 
 	// If converted volumes are provided, skip conversion
-	if len(migobj.ConvertedVolumeIDs) != 0 {
+	if len(migobj.ConvertedVolumeIDs) == 0 {
 		// Convert the Boot Disk to raw format
 		err = migobj.ConvertVolumes(ctx, vminfo)
 		if err != nil {
