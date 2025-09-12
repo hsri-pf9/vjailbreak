@@ -448,8 +448,10 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 				if err := migobj.WaitforCutover(); err != nil {
 					return vminfo, errors.Wrap(err, "failed to start VM Cutover")
 				}
-				if err := migobj.WaitforAdminCutover(); err != nil {
-					return vminfo, errors.Wrap(err, "failed to start Admin initated Cutover")
+				if adminInitiatedCutover {
+					if err := migobj.WaitforAdminCutover(); err != nil {
+						return vminfo, errors.Wrap(err, "failed to start Admin initated Cutover")
+					}
 				}
 				utils.PrintLog("Shutting down source VM and performing final copy")
 				// err = vmops.VMPowerOff()
@@ -1156,14 +1158,16 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 		migobj.Nbdops = append(migobj.Nbdops, &nbd.NBDServer{})
 	}
 
-	// Live Replicate Disks
-	vminfo, err = migobj.LiveReplicateDisks(ctx, vminfo)
-	if err != nil {
-		if cleanuperror := migobj.cleanup(vminfo, fmt.Sprintf("failed to live replicate disks: %s", err)); cleanuperror != nil {
-			// combine both errors
-			return errors.Wrapf(err, "failed to cleanup disks: %s", cleanuperror)
+	if len(migobj.CopiedVolumeIDs) == 0 && len(migobj.ConvertedVolumeIDs) == 0 {
+		// Live Replicate Disks only if no existing copied or converted volumes are provided
+		vminfo, err = migobj.LiveReplicateDisks(ctx, vminfo)
+		if err != nil {
+			if cleanuperror := migobj.cleanup(vminfo, fmt.Sprintf("failed to live replicate disks: %s", err)); cleanuperror != nil {
+				// combine both errors
+				return errors.Wrapf(err, "failed to cleanup disks: %s", cleanuperror)
+			}
+			return errors.Wrap(err, "failed to live replicate disks")
 		}
-		return errors.Wrap(err, "failed to live replicate disks")
 	}
 
 	// Import LUN and MigrateRDM disk
@@ -1182,7 +1186,7 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 	}
 
 	// If converted volumes are provided, skip conversion
-	if len(migobj.ConvertedVolumeIDs) != 0 {
+	if len(migobj.ConvertedVolumeIDs) == 0 {
 		// Convert the Boot Disk to raw format
 		err = migobj.ConvertVolumes(ctx, vminfo)
 		if err != nil {
@@ -1207,10 +1211,10 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 			return errors.Wrap(err, "failed to convert disks")
 		}
 	}
-	fmt.Println("Disk conversion completed successfully, debug complete, exiting migratiin")
+	fmt.Println("Disk conversion completed successfully, debug complete, exiting migration")
 
 	// Create the target instance
-	// migobj.logMessage(fmt.Sprintf("%s: %s", constants.EventMessageCreatingVM, vminfo.Name))
+	migobj.logMessage(fmt.Sprintf("%s: %s", constants.EventMessageCreatingVM, vminfo.Name))
 	// err = migobj.CreateTargetInstance(vminfo, networkids, portids, ipaddresses)
 	// if err != nil {
 	// 	if cleanuperror := migobj.cleanup(vminfo, fmt.Sprintf("failed to create target instance: %s", err)); cleanuperror != nil {
