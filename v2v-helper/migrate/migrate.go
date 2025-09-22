@@ -304,9 +304,9 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 	thumbprint := migobj.Thumbprint
 
 	if migobj.MigrationType == "cold" && !migobj.CheckIfAdminCutoverSelected() {
-		if err := vmops.VMPowerOff(); err != nil {
-			return vminfo, errors.Wrap(err, "failed to power off VM")
-		}
+		// if err := vmops.VMPowerOff(); err != nil {
+		// 	return vminfo, errors.Wrap(err, "failed to power off VM")
+		// }
 	}
 
 	// clean up snapshots
@@ -375,10 +375,10 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 					return vminfo, errors.Wrap(err, "failed to start VM Cutover")
 				}
 				utils.PrintLog("Shutting down source VM and performing final copy")
-				err = vmops.VMPowerOff()
-				if err != nil {
-					return vminfo, errors.Wrap(err, "failed to power off VM")
-				}
+				// err = vmops.VMPowerOff()
+				// if err != nil {
+				// 	return vminfo, errors.Wrap(err, "failed to power off VM")
+				// }
 			}
 			if err := migobj.WaitforCutover(); err != nil {
 				return vminfo, errors.Wrap(err, "failed to start VM Cutover")
@@ -451,10 +451,10 @@ func (migobj *Migrate) LiveReplicateDisks(ctx context.Context, vminfo vm.VMInfo)
 			}
 			if done || incrementalCopyCount > vcenterSettings.ChangedBlocksCopyIterationThreshold {
 				utils.PrintLog("Shutting down source VM and performing final copy")
-				err = vmops.VMPowerOff()
-				if err != nil {
-					return vminfo, errors.Wrap(err, "failed to power off VM")
-				}
+				// err = vmops.VMPowerOff()
+				// if err != nil {
+				// 	return vminfo, errors.Wrap(err, "failed to power off VM")
+				// }
 				final = true
 			}
 		}
