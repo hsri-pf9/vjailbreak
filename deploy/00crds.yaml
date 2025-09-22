@@ -439,6 +439,8 @@ spec:
               MigrationPlanSpec defines the desired state of MigrationPlan including
               the migration template, strategy, and the list of virtual machines to migrate
             properties:
+              fallbackToDHCP:
+                type: boolean
               firstBootScript:
                 default: echo "Add your startup script here!"
                 type: string
@@ -3606,7 +3608,10 @@ spec:
         - --health-probe-bind-address=:8081
         command:
         - /manager
-        image: quay.io/platform9/vjailbreak-controller:v0.3.4
+        env:
+        - name: MAX_CONCURRENT_RECONCILES
+          value: "5"
+        image: quay.io/platform9/vjailbreak-controller:v0.3.5
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -3686,7 +3691,7 @@ spec:
         app: vpwned-sdk
     spec:
       containers:
-      - image: quay.io/platform9/vjailbreak-vpwned:v0.3.4
+      - image: quay.io/platform9/vjailbreak-vpwned:v0.3.5
         imagePullPolicy: IfNotPresent
         name: vpwned
         ports:

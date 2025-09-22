@@ -49,6 +49,8 @@ spec:
               MigrationPlanSpec defines the desired state of MigrationPlan including
               the migration template, strategy, and the list of virtual machines to migrate
             properties:
+              fallbackToDHCP:
+                type: boolean
               firstBootScript:
                 default: echo "Add your startup script here!"
                 type: string
