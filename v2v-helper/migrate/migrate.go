@@ -1175,6 +1175,9 @@ func (migobj *Migrate) MigrateVM(ctx context.Context) error {
 		}
 	}
 
+	//TODO(omkar): remove this sleep
+	time.Sleep(24 * time.Hour)
+
 	// Create the target instance
 	migobj.logMessage(fmt.Sprintf("%s: %s", constants.EventMessageCreatingVM, vminfo.Name))
 	err = migobj.CreateTargetInstance(vminfo, networkids, portids, ipaddresses)
