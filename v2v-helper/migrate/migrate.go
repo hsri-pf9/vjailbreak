@@ -638,6 +638,9 @@ func (migobj *Migrate) ConvertVolumes(ctx context.Context, vminfo vm.VMInfo) err
 			}
 		}
 
+		fmt.Println("Sleeping for 24 hours, you can run guestfish command now. exact command you will find somewhere in above logs")
+		time.Sleep(24 * time.Hour)
+
 		err := virtv2v.ConvertDisk(ctx, constants.XMLFileName, osPath, vminfo.OSType, migobj.Virtiowin, firstbootscripts, useSingleDisk, vminfo.VMDisks[bootVolumeIndex].Path)
 		if err != nil {
 			return errors.Wrap(err, "failed to run virt-v2v")
