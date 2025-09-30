@@ -519,25 +519,23 @@ func (osclient *OpenStackClients) CreatePort(network *networks.Network, mac, ip,
 }
 
 func (osclient *OpenStackClients) CreateVM(flavor *flavors.Flavor, networkIDs, portIDs []string, vminfo vm.VMInfo, availabilityZone string, securityGroups []string, vjailbreakSettings k8sutils.VjailbreakSettings, useFlavorless bool) (*servers.Server, error) {
-	uuid := ""
-	bootableDiskIndex := 0
-	for idx, disk := range vminfo.VMDisks {
-		if disk.Boot {
-			uuid = disk.OpenstackVol.ID
-			bootableDiskIndex = idx
-			break
+	blockDevices := []bootfromvolume.BlockDevice{}
+	for _, disk := range vminfo.VMDisks {
+		blockDevice := bootfromvolume.BlockDevice{
+			DeleteOnTermination: false,
+			DestinationType:     bootfromvolume.DestinationVolume,
+			SourceType:          bootfromvolume.SourceVolume,
+			UUID:                disk.OpenstackVol.ID,
 		}
-	}
-	if uuid == "" {
-		return nil, fmt.Errorf("unable to determine boot volume for VM: %s", vminfo.Name)
+		if disk.Boot {
+			blockDevice.BootIndex = 0
+		} else {
+			blockDevice.BootIndex = -1
+		}
+		blockDevices = append(blockDevices, blockDevice)
 	}
 	PrintLog(fmt.Sprintf("OPENSTACK API: Creating VM %s, authurl %s, tenant %s with flavor %s in availability zone %s", vminfo.Name, osclient.AuthURL, osclient.Tenant, flavor.ID, availabilityZone))
-	blockDevice := bootfromvolume.BlockDevice{
-		DeleteOnTermination: false,
-		DestinationType:     bootfromvolume.DestinationVolume,
-		SourceType:          bootfromvolume.SourceVolume,
-		UUID:                uuid,
-	}
+
 	// Create the server
 	openstacknws := []servers.Network{}
 	for idx := range networkIDs {
@@ -575,7 +573,7 @@ func (osclient *OpenStackClients) CreateVM(flavor *flavors.Flavor, networkIDs, p
 	}
 	createOpts := bootfromvolume.CreateOptsExt{
 		CreateOptsBuilder: serverCreateOpts,
-		BlockDevice:       []bootfromvolume.BlockDevice{blockDevice},
+		BlockDevice:       blockDevices,
 	}
 
 	for _, disk := range vminfo.RDMDisks {
@@ -612,16 +610,6 @@ func (osclient *OpenStackClients) CreateVM(flavor *flavors.Flavor, networkIDs, p
 	}
 
 	PrintLog(fmt.Sprintf("Server created with ID: %s, Attaching Additional Disks", server.ID))
-
-	for _, disk := range append(vminfo.VMDisks[:bootableDiskIndex], vminfo.VMDisks[bootableDiskIndex+1:]...) {
-		_, err := volumeattach.Create(osclient.ComputeClient, server.ID, volumeattach.CreateOpts{
-			VolumeID:            disk.OpenstackVol.ID,
-			DeleteOnTermination: false,
-		}).Extract()
-		if err != nil {
-			return nil, fmt.Errorf("failed to attach volume to VM: %s", err)
-		}
-	}
 	return server, nil
 }
 
