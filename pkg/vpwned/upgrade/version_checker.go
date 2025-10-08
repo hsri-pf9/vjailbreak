@@ -4,8 +4,11 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net/http"
+	"os"
 	"os/exec"
 	"sort"
+	"time"
 
 	"github.com/google/go-github/v63/github"
 	"golang.org/x/mod/semver"
@@ -18,6 +21,13 @@ type ReleaseInfo struct {
 	Version      string
 	ReleaseNotes string
 	DownloadURL  string
+}
+
+func httpClient() *http.Client {
+	return &http.Client{
+		Timeout: 60 * time.Second,
+		Transport: http.DefaultTransport,
+	}
 }
 
 func getCurrentVersionFromConfigMap() (string, error) {
@@ -45,26 +55,46 @@ func getCurrentVersionFromConfigMap() (string, error) {
 }
 
 func GetAllTags(ctx context.Context) ([]string, error) {
+	if v := os.Getenv("DISABLE_UPGRADE_CHECK"); v == "true" || v == "1" {
+		log.Printf("Upgrade version check disabled. Skipping.")
+		return []string{}, nil
+	}
+
 	owner, repo := loadGitHubConfig(ctx)
 	currentVersion, err := getCurrentVersionFromConfigMap()
 	if err != nil {
-		fmt.Printf("Warning: Could not get current version from configmap: %v. Showing all tags.\n", err)
-		return getAllTagsFromGitHub(ctx, owner, repo)
+		log.Printf("Warning: Could not get current version from configmap: %v. Showing all tags.", err)
+		tags, ghErr := getAllTagsFromGitHub(ctx, owner, repo)
+		if ghErr != nil {
+			log.Printf("Network not reachable or GitHub API call failed. Skipping upgrade check.", ghErr)
+			return []string{}, nil
+		}
+		return tags, nil
 	}
 
 	isSemver := semver.IsValid(currentVersion)
 
 	if isSemver {
-		fmt.Printf("Current version %s is semver format. Showing only newer versions.\n", currentVersion)
-		return getTagsGreaterThanVersion(ctx, owner, repo, currentVersion)
+		log.Printf("Current version %s is semver format. Showing only newer versions.", currentVersion)
+		tags, ghErr := getTagsGreaterThanVersion(ctx, owner, repo, currentVersion)
+		if ghErr != nil {
+			log.Printf("Network not reachable or GitHub API call failed. Skipping upgrade check.", ghErr)
+			return []string{}, nil
+		}
+		return tags, nil
 	} else {
-		fmt.Printf("Current version %s is not semver format. Showing all tags.\n", currentVersion)
-		return getAllTagsFromGitHub(ctx, owner, repo)
+		log.Printf("Current version %s is not semver format. Showing all tags.", currentVersion)
+		tags, ghErr := getAllTagsFromGitHub(ctx, owner, repo)
+		if ghErr != nil {
+			log.Printf("Network not reachable or GitHub API call failed. Skipping upgrade check.", ghErr)
+			return []string{}, nil
+		}
+		return tags, nil
 	}
 }
 
 func getAllTagsFromGitHub(ctx context.Context, owner, repo string) ([]string, error) {
-	client := github.NewClient(nil)
+	client := github.NewClient(httpClient())
 	tags, _, err := client.Repositories.ListTags(ctx, owner, repo, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch tags for repo %s/%s: %w", owner, repo, err)
@@ -80,7 +110,7 @@ func getAllTagsFromGitHub(ctx context.Context, owner, repo string) ([]string, er
 }
 
 func getTagsGreaterThanVersion(ctx context.Context, owner, repo, currentVersion string) ([]string, error) {
-	client := github.NewClient(nil)
+	client := github.NewClient(httpClient())
 	tags, _, err := client.Repositories.ListTags(ctx, owner, repo, nil)
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch tags for repo %s/%s: %w", owner, repo, err)

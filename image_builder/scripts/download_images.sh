@@ -29,6 +29,7 @@ vpwned="quay.io/platform9/vjailbreak-vpwned:$TAG"
 virtiowin="https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso"
 # TODO(suhas): Create a seperate repository for alpine image in quay
 alpine="quay.io/platform9/vjailbreak:alpine"
+alpine_upstream="docker.io/alpine:3.18"
 
 # Download and export images
 images=(
@@ -47,6 +48,7 @@ images=(
   "$configmap_reload"
   "$grafana"
   "$alpine"
+  "$alpine_upstream"
   "$vpwned"
 )
 

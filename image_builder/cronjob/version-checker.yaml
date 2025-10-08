@@ -46,7 +46,17 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: version-checker
-              image: alpine:3.18
+              image: docker.io/alpine:3.18
+              envFrom:
+                - configMapRef:
+                    name: pf9-env
+              env:
+                - name: DISABLE_VERSION_CHECK
+                  valueFrom:
+                    configMapKeyRef:
+                      name: version-checker-config
+                      key: DISABLE_VERSION_CHECK
+                      optional: true
               command:
                 - /bin/sh
                 - -c
@@ -54,7 +64,15 @@ spec:
                   set -e
                   apk add --no-cache curl jq
 
-                  curl -LO "https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl"
+                  if [ "${DISABLE_VERSION_CHECK:-}" = "true" ] || [ "${DISABLE_VERSION_CHECK:-}" = "1" ]; then
+                    echo "Version checker is disabled. Exiting."
+                    exit 0
+                  fi
+
+                  if ! curl --fail --silent --show-error --location --connect-timeout 10 --max-time 60 -LO "https://dl.k8s.io/release/v1.34.0/bin/linux/amd64/kubectl"; then
+                    echo "Network not reachable or kubectl download failed. Skipping version check."
+                    exit 0
+                  fi
 
                   chmod +x kubectl
                   mv kubectl /usr/local/bin/
@@ -64,15 +82,18 @@ spec:
                   echo "Current version: $CURRENT_VERSION"
 
                   if [ -z "$CURRENT_VERSION" ]; then
-                    echo "Error: 'version' key not found in ConfigMap. Exiting."
-                    exit 1
+                    echo "Warning: 'version' key not found in ConfigMap. Skipping check."
+                    exit 0
                   fi
 
-                  LATEST_TAG=$(curl -s "https://api.github.com/repos/platform9/vjailbreak/tags" | jq -r '.[0].name')
+                  if ! LATEST_TAG=$(curl --fail --silent --show-error --connect-timeout 10 --max-time 60 "https://api.github.com/repos/platform9/vjailbreak/tags" | jq -r '.[0].name'); then
+                    echo "Network not reachable or GitHub API call failed. Skipping version check."
+                    exit 0
+                  fi
 
-                  if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" == "null" ]; then
-                    echo "Error: Could not fetch latest tag from GitHub. Exiting."
-                    exit 1
+                  if [ -z "$LATEST_TAG" ] || [ "$LATEST_TAG" = "null" ]; then
+                    echo "Warning: Could not determine latest tag from GitHub response. Skipping check."
+                    exit 0
                   fi
                   echo "Latest tag on GitHub: $LATEST_TAG"
 
