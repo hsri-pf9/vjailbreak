@@ -46,7 +46,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: version-checker
-              image: docker.io/alpine:3.18
+              image: quay.io/platform9/vjailbreak:alpine
               envFrom:
                 - configMapRef:
                     name: pf9-env
