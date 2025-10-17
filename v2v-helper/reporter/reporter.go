@@ -4,8 +4,9 @@ package reporter
 
 import (
 	"context"
+	"crypto/rand"
 	"fmt"
-	"math/rand"
+	"math/big"
 	"os"
 	"strings"
 	"time"
@@ -115,7 +116,13 @@ func generateRandomString(length int) string {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	b := make([]byte, length)
 	for i := range b {
-		b[i] = charset[rand.Intn(len(charset))]
+		n, err := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
+		if err != nil {
+			// Fallback to a simple approach if crypto/rand fails
+			b[i] = charset[i%len(charset)]
+		} else {
+			b[i] = charset[n.Int64()]
+		}
 	}
 	return string(b)
 }

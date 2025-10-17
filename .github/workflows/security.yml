@@ -84,11 +84,14 @@ jobs:
       - name: Download Baseline Gosec Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: dawidd6/action-download-artifact@v3
         with:
           name: gosec-security-report-${{ github.event.pull_request.base.sha }}
           path: ./baseline-reports
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: security.yml
+          branch: ${{ github.event.pull_request.base.ref }}
+          search_artifacts: true
 
       - name: Compare Vulnerabilities with Baseline (PR only)
         if: github.event_name == 'pull_request'
@@ -174,8 +177,17 @@ jobs:
           cat tmp/pr-body.md
           echo "=========================================="
 
+      - name: Store Gosec Report as Artifact (Main/Release)
+        if: ${{ (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'release' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: gosec-security-report-${{ github.sha }}
+          path: tmp/gosec-report.json
+          retention-days: 90
+
       - name: Create Pull Request (if vulnerabilities found)
         if: ${{ github.event_name == 'push' && steps.scan.outputs.gosec_high_found == 'true' }}
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v5
         with:
           commit-message: 'chore: vulnerabilities detected by Gosec (HIGH/CRITICAL)'
@@ -184,14 +196,6 @@ jobs:
           branch: auto/gosec-scan/${{ env.SAFE_REF_NAME }}
           base: ${{ github.ref_name }}
           delete-branch: true
-
-      - name: Store Gosec Report as Artifact (Main/Release)
-        if: ${{ (github.ref == 'refs/heads/main' && github.event_name == 'push') || github.event_name == 'release' }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: gosec-security-report-${{ github.sha }}
-          path: tmp/gosec-report.json
-          retention-days: 90
 
       - name: Fail Job If Vulnerabilities Found
         if: ${{ steps.scan.outputs.gosec_high_found == 'true' }}
@@ -277,11 +281,14 @@ jobs:
       - name: Download Baseline Trivy Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: dawidd6/action-download-artifact@v3
         with:
           name: trivy-filesystem-report-${{ github.event.pull_request.base.sha }}
           path: ./baseline-reports
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: security.yml
+          branch: ${{ github.event.pull_request.base.ref }}
+          search_artifacts: true
 
       - name: Compare Trivy Vulnerabilities with Baseline (PR only)
         if: github.event_name == 'pull_request'
@@ -429,6 +436,7 @@ jobs:
 
       - name: Create Pull Request (if vulnerabilities found)
         if: ${{ github.event_name == 'push' && steps.scan.outputs.trivy_high_found == 'true' }}
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v5
         with:
           commit-message: 'chore: vulnerabilities detected by Trivy (HIGH/CRITICAL)'
@@ -569,11 +577,14 @@ jobs:
       - name: Download Baseline Trivy Image Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
-        uses: actions/download-artifact@v4
+        uses: dawidd6/action-download-artifact@v3
         with:
           name: trivy-image-report-${{ github.event.pull_request.base.sha }}
           path: ./baseline-reports
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: security.yml
+          branch: ${{ github.event.pull_request.base.ref }}
+          search_artifacts: true
 
       - name: Compare Trivy Image Vulnerabilities with Baseline (PR only)
         if: github.event_name == 'pull_request'
@@ -683,6 +694,7 @@ jobs:
 
       - name: Create Pull Request for Image Vulnerabilities
         if: ${{ github.event_name == 'push' && steps.image_scan.outputs.trivy_image_high_found == 'true' }}
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v5
         with:
           commit-message: 'chore: Docker image vulnerabilities detected by Trivy (HIGH/CRITICAL)'

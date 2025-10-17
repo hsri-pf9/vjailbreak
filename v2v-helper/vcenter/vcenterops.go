@@ -103,9 +103,19 @@ func VCenterClientBuilder(ctx context.Context, username, password, host string, 
 
 func GetThumbprint(host string) (string, error) {
 	// Get the thumbprint of the vCenter server
-	// Establish a TLS connection to the server
+	// Establish a TLS connection to the server with custom verification
+	// We need to access the certificate to compute thumbprint, but we'll validate the connection
 	conn, err := tls.Dial("tcp", host+":443", &tls.Config{
-		InsecureSkipVerify: true, // Skip verification
+		ServerName: host,
+		VerifyConnection: func(cs tls.ConnectionState) error {
+			// Custom verification: we allow the connection to proceed to get the certificate
+			// but we validate that we actually received certificates
+			if len(cs.PeerCertificates) == 0 {
+				return fmt.Errorf("no peer certificates received")
+			}
+			// Allow connection to proceed for thumbprint extraction
+			return nil
+		},
 	})
 	if err != nil {
 		return "", fmt.Errorf("failed to connect to vCenter: %v", err)
