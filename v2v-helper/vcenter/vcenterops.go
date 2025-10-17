@@ -107,6 +107,7 @@ func GetThumbprint(host string) (string, error) {
 	// We need to access the certificate to compute thumbprint, but we'll validate the connection
 	conn, err := tls.Dial("tcp", host+":443", &tls.Config{
 		ServerName: host,
+		MinVersion: tls.VersionTLS12, // Require TLS 1.2 or higher
 		VerifyConnection: func(cs tls.ConnectionState) error {
 			// Custom verification: we allow the connection to proceed to get the certificate
 			// but we validate that we actually received certificates
