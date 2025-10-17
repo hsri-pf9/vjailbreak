@@ -15,7 +15,7 @@ jobs:
       go-version: '1.22'
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Export Go Version
         run: echo "go-version=1.22" >> $GITHUB_OUTPUT
 
@@ -35,10 +35,10 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: '${{ needs.setup.outputs.go-version }}'
 
@@ -81,6 +81,14 @@ jobs:
             | "* File: \(.file)\n  • Line: \(.line)\n  • Rule ID: \(.rule_id)\n  • Details: \(.details)\n  • Confidence: \(.confidence)\n  • Severity: \(.severity)\n"
           ' tmp/gosec-report.json >> tmp/pr-body.md
 
+      - name: Debug - List Available Artifacts
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          echo "Looking for artifacts from base SHA: ${{ github.event.pull_request.base.sha }}"
+          echo "Expected Gosec artifact: gosec-security-report-${{ github.event.pull_request.base.sha }}"
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+
       - name: Download Baseline Gosec Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
@@ -91,6 +99,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: security.yml
           branch: ${{ github.event.pull_request.base.ref }}
+          workflow_conclusion: ""
+          check_artifacts: true
+          if_no_artifact_found: warn
+          repo: ${{ github.repository }}
           search_artifacts: true
 
       - name: Compare Vulnerabilities with Baseline (PR only)
@@ -223,7 +235,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Trivy
         run: |
@@ -278,6 +290,14 @@ jobs:
             | "* File: \($file)\n  • Vulnerability ID: \(.VulnerabilityID)\n  • Pkg: \(.PkgName) \(.InstalledVersion)\n  • Severity: \(.Severity)\n  • Title: \(.Title)\n"
           ' tmp/trivy-report.json >> tmp/pr-body.md
 
+      - name: Debug - List Available Trivy Artifacts
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          echo "Looking for Trivy artifacts from base SHA: ${{ github.event.pull_request.base.sha }}"
+          echo "Expected Trivy artifact: trivy-filesystem-report-${{ github.event.pull_request.base.sha }}"
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+
       - name: Download Baseline Trivy Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
@@ -288,6 +308,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: security.yml
           branch: ${{ github.event.pull_request.base.ref }}
+          workflow_conclusion: ""
+          check_artifacts: true
+          if_no_artifact_found: warn
+          repo: ${{ github.repository }}
           search_artifacts: true
 
       - name: Compare Trivy Vulnerabilities with Baseline (PR only)
@@ -574,6 +598,14 @@ jobs:
             | "* **Image**: \($target)\n  • **Vulnerability ID**: \(.VulnerabilityID)\n  • **Package**: \(.PkgName) \(.InstalledVersion)\n  • **Severity**: \(.Severity)\n  • **Title**: \(.Title)\n"
           ' tmp/trivy-image-report.json >> tmp/pr-body-images.md
 
+      - name: Debug - List Available Trivy Image Artifacts
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          echo "Looking for Trivy Image artifacts from base SHA: ${{ github.event.pull_request.base.sha }}"
+          echo "Expected Trivy Image artifact: trivy-image-report-${{ github.event.pull_request.base.sha }}"
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+
       - name: Download Baseline Trivy Image Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
@@ -584,6 +616,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: security.yml
           branch: ${{ github.event.pull_request.base.ref }}
+          workflow_conclusion: ""
+          check_artifacts: true
+          if_no_artifact_found: warn
+          repo: ${{ github.repository }}
           search_artifacts: true
 
       - name: Compare Trivy Image Vulnerabilities with Baseline (PR only)
