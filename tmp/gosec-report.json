@@ -1,0 +1,3306 @@
+{
+	"Golang errors": {
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/api/v1alpha1/bmconfig_types.go": [
+			{
+				"line": 20,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/apis/meta/v1 (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/api/v1alpha1/groupversion_info.go": [
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime/schema (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/scheme (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/api/v1alpha1/openstackcreds_types.go": [
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/flavors (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/api/v1alpha1/zz_generated.deepcopy.go": [
+			{
+				"line": 27,
+				"column": 10,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/cmd/main.go": [
+			{
+				"line": 29,
+				"column": 4,
+				"error": "could not import k8s.io/client-go/plugin/pkg/client/auth (invalid package name: \"\")"
+			},
+			{
+				"line": 31,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 32,
+				"column": 14,
+				"error": "could not import k8s.io/apimachinery/pkg/util/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 33,
+				"column": 17,
+				"error": "could not import k8s.io/client-go/kubernetes/scheme (invalid package name: \"\")"
+			},
+			{
+				"line": 34,
+				"column": 7,
+				"error": "could not import sigs.k8s.io/controller-runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 35,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/healthz (invalid package name: \"\")"
+			},
+			{
+				"line": 36,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/log/zap (invalid package name: \"\")"
+			},
+			{
+				"line": 37,
+				"column": 16,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/metrics/server (invalid package name: \"\")"
+			},
+			{
+				"line": 38,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/webhook (invalid package name: \"\")"
+			},
+			{
+				"line": 40,
+				"column": 8,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 42,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 43,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/internal/controller (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/base_controller.go": [
+			{
+				"line": 8,
+				"column": 12,
+				"error": "could not import k8s.io/apimachinery/pkg/api/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 9,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 10,
+				"column": 7,
+				"error": "could not import sigs.k8s.io/controller-runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			},
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/log (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 14,
+				"error": "r.Get undefined (type *BaseReconciler has no field or method Get)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/bmconfig_controller.go": [
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 26,
+				"column": 12,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 27,
+				"column": 8,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/scope (invalid package name: \"\")"
+			},
+			{
+				"line": 28,
+				"column": 12,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers (invalid package name: \"\")"
+			},
+			{
+				"line": 29,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 34,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/controller/controllerutil (invalid package name: \"\")"
+			},
+			{
+				"line": 55,
+				"column": 14,
+				"error": "r.Get undefined (type *BMConfigReconciler has no field or method Get)"
+			},
+			{
+				"line": 114,
+				"column": 21,
+				"error": "r.Status undefined (type *BMConfigReconciler has no field or method Status)"
+			},
+			{
+				"line": 129,
+				"column": 20,
+				"error": "r.Status undefined (type *BMConfigReconciler has no field or method Status)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/clustermigration_controller.go": [
+			{
+				"line": 26,
+				"column": 8,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 36,
+				"column": 11,
+				"error": "could not import k8s.io/apimachinery/pkg/types (invalid package name: \"\")"
+			},
+			{
+				"line": 56,
+				"column": 14,
+				"error": "r.Get undefined (type *ClusterMigrationReconciler has no field or method Get)"
+			},
+			{
+				"line": 69,
+				"column": 14,
+				"error": "r.Get undefined (type *ClusterMigrationReconciler has no field or method Get)"
+			},
+			{
+				"line": 245,
+				"column": 15,
+				"error": "r.Delete undefined (type *ClusterMigrationReconciler has no field or method Delete)"
+			},
+			{
+				"line": 284,
+				"column": 11,
+				"error": "r.Status undefined (type *ClusterMigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 292,
+				"column": 14,
+				"error": "r.List undefined (type *ClusterMigrationReconciler has no field or method List)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/esximigration_controller.go": [
+			{
+				"line": 56,
+				"column": 14,
+				"error": "r.Get undefined (type *ESXIMigrationReconciler has no field or method Get)"
+			},
+			{
+				"line": 77,
+				"column": 14,
+				"error": "r.Get undefined (type *ESXIMigrationReconciler has no field or method Get)"
+			},
+			{
+				"line": 113,
+				"column": 12,
+				"error": "r.Status undefined (type *ESXIMigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 137,
+				"column": 14,
+				"error": "r.Get undefined (type *ESXIMigrationReconciler has no field or method Get)"
+			},
+			{
+				"line": 210,
+				"column": 10,
+				"error": "r.Status undefined (type *ESXIMigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 247,
+				"column": 10,
+				"error": "r.Status undefined (type *ESXIMigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 278,
+				"column": 11,
+				"error": "r.Update undefined (type *ESXIMigrationReconciler has no field or method Update)"
+			},
+			{
+				"line": 295,
+				"column": 11,
+				"error": "r.List undefined (type *ESXIMigrationReconciler has no field or method List)"
+			},
+			{
+				"line": 322,
+				"column": 10,
+				"error": "r.Status undefined (type *ESXIMigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 352,
+				"column": 11,
+				"error": "r.Status undefined (type *ESXIMigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 362,
+				"column": 10,
+				"error": "r.Status undefined (type *ESXIMigrationReconciler has no field or method Status)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/migration_controller.go": [
+			{
+				"line": 27,
+				"column": 17,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 28,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/controller (invalid package name: \"\")"
+			},
+			{
+				"line": 36,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/builder (invalid package name: \"\")"
+			},
+			{
+				"line": 38,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/event (invalid package name: \"\")"
+			},
+			{
+				"line": 40,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/predicate (invalid package name: \"\")"
+			},
+			{
+				"line": 80,
+				"column": 14,
+				"error": "r.Get undefined (type *MigrationReconciler has no field or method Get)"
+			},
+			{
+				"line": 112,
+				"column": 16,
+				"error": "r.Update undefined (type *MigrationReconciler has no field or method Update)"
+			},
+			{
+				"line": 122,
+				"column": 15,
+				"error": "r.Update undefined (type *MigrationReconciler has no field or method Update)"
+			},
+			{
+				"line": 143,
+				"column": 15,
+				"error": "r.Update undefined (type *MigrationReconciler has no field or method Update)"
+			},
+			{
+				"line": 149,
+				"column": 13,
+				"error": "r.Update undefined (type *MigrationReconciler has no field or method Update)"
+			},
+			{
+				"line": 177,
+				"column": 14,
+				"error": "r.Status undefined (type *MigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 214,
+				"column": 10,
+				"error": "r.Get undefined (type *MigrationReconciler has no field or method Get)"
+			},
+			{
+				"line": 226,
+				"column": 15,
+				"error": "r.Status undefined (type *MigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 352,
+				"column": 14,
+				"error": "r.Get undefined (type *MigrationReconciler has no field or method Get)"
+			},
+			{
+				"line": 357,
+				"column": 11,
+				"error": "r.Status undefined (type *MigrationReconciler has no field or method Status)"
+			},
+			{
+				"line": 372,
+				"column": 14,
+				"error": "r.List undefined (type *MigrationReconciler has no field or method List)"
+			},
+			{
+				"line": 404,
+				"column": 14,
+				"error": "r.List undefined (type *MigrationReconciler has no field or method List)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/migrationplan_controller.go": [
+			{
+				"line": 29,
+				"column": 2,
+				"error": "could not import github.com/go-logr/logr (invalid package name: \"\")"
+			},
+			{
+				"line": 30,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/flavors (invalid package name: \"\")"
+			},
+			{
+				"line": 36,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/verrors (invalid package name: \"\")"
+			},
+			{
+				"line": 37,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vcenter (invalid package name: \"\")"
+			},
+			{
+				"line": 39,
+				"column": 10,
+				"error": "could not import k8s.io/api/batch/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 42,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/api/resource (invalid package name: \"\")"
+			},
+			{
+				"line": 43,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/apis/meta/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 46,
+				"column": 2,
+				"error": "could not import k8s.io/utils/ptr (invalid package name: \"\")"
+			},
+			{
+				"line": 53,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/find (invalid package name: \"\")"
+			},
+			{
+				"line": 54,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/object (invalid package name: \"\")"
+			},
+			{
+				"line": 55,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/session (invalid package name: \"\")"
+			},
+			{
+				"line": 56,
+				"column": 15,
+				"error": "could not import github.com/vmware/govmomi/vim25/types (invalid package name: \"\")"
+			},
+			{
+				"line": 95,
+				"column": 14,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 159,
+				"column": 14,
+				"error": "r.Update undefined (type *MigrationPlanReconciler has no field or method Update)"
+			},
+			{
+				"line": 173,
+				"column": 14,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 187,
+				"column": 14,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 357,
+				"column": 10,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 397,
+				"column": 14,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 443,
+				"column": 15,
+				"error": "r.Update undefined (type *MigrationPlanReconciler has no field or method Update)"
+			},
+			{
+				"line": 466,
+				"column": 15,
+				"error": "r.Delete undefined (type *MigrationPlanReconciler has no field or method Delete)"
+			},
+			{
+				"line": 473,
+				"column": 14,
+				"error": "r.Update undefined (type *MigrationPlanReconciler has no field or method Update)"
+			},
+			{
+				"line": 500,
+				"column": 10,
+				"error": "r.Status undefined (type *MigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 517,
+				"column": 16,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 534,
+				"column": 15,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 550,
+				"column": 21,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 568,
+				"column": 11,
+				"error": "r.Status undefined (type *MigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 590,
+				"column": 2,
+				"error": "declared and not used: vminfo"
+			},
+			{
+				"line": 593,
+				"column": 10,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 675,
+				"column": 10,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 851,
+				"column": 10,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 920,
+				"column": 10,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 1007,
+				"column": 10,
+				"error": "r.Create undefined (type *MigrationPlanReconciler has no field or method Create)"
+			},
+			{
+				"line": 1073,
+				"column": 10,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 1113,
+				"column": 11,
+				"error": "r.Status undefined (type *MigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 1133,
+				"column": 10,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 1156,
+				"column": 11,
+				"error": "r.Status undefined (type *MigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 1178,
+				"column": 11,
+				"error": "r.List undefined (type *MigrationPlanReconciler has no field or method List)"
+			},
+			{
+				"line": 1200,
+				"column": 23,
+				"error": "r.Status undefined (type *MigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 1211,
+				"column": 17,
+				"error": "r.Patch undefined (type *MigrationPlanReconciler has no field or method Patch)"
+			},
+			{
+				"line": 1307,
+				"column": 14,
+				"error": "r.Status undefined (type *MigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 1329,
+				"column": 15,
+				"error": "r.Status undefined (type *MigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 1349,
+				"column": 14,
+				"error": "r.Status undefined (type *MigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 1404,
+				"column": 14,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 1440,
+				"column": 15,
+				"error": "r.Update undefined (type *MigrationPlanReconciler has no field or method Update)"
+			},
+			{
+				"line": 1450,
+				"column": 12,
+				"error": "r.Get undefined (type *MigrationPlanReconciler has no field or method Get)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/migrationtemplate_controller.go": [
+			{
+				"line": 54,
+				"column": 14,
+				"error": "r.Get undefined (type *MigrationTemplateReconciler has no field or method Get)"
+			},
+			{
+				"line": 84,
+				"column": 11,
+				"error": "r.Get undefined (type *MigrationTemplateReconciler has no field or method Get)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/networkmapping_controller.go": [
+			{
+				"line": 46,
+				"column": 12,
+				"error": "r.Status undefined (type *NetworkMappingReconciler has no field or method Status)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/openstackcreds_controller.go": [
+			{
+				"line": 30,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/k8sutils (invalid package name: \"\")"
+			},
+			{
+				"line": 74,
+				"column": 14,
+				"error": "r.Get undefined (type *OpenstackCredsReconciler has no field or method Get)"
+			},
+			{
+				"line": 117,
+				"column": 15,
+				"error": "r.Update undefined (type *OpenstackCredsReconciler has no field or method Update)"
+			},
+			{
+				"line": 143,
+				"column": 15,
+				"error": "r.Status undefined (type *OpenstackCredsReconciler has no field or method Status)"
+			},
+			{
+				"line": 159,
+				"column": 15,
+				"error": "r.Status undefined (type *OpenstackCredsReconciler has no field or method Status)"
+			},
+			{
+				"line": 193,
+				"column": 14,
+				"error": "r.List undefined (type *OpenstackCredsReconciler has no field or method List)"
+			},
+			{
+				"line": 199,
+				"column": 15,
+				"error": "r.Delete undefined (type *OpenstackCredsReconciler has no field or method Delete)"
+			},
+			{
+				"line": 207,
+				"column": 15,
+				"error": "r.Delete undefined (type *OpenstackCredsReconciler has no field or method Delete)"
+			},
+			{
+				"line": 216,
+				"column": 15,
+				"error": "r.Update undefined (type *OpenstackCredsReconciler has no field or method Update)"
+			},
+			{
+				"line": 262,
+				"column": 13,
+				"error": "r.Update undefined (type *OpenstackCredsReconciler has no field or method Update)"
+			},
+			{
+				"line": 276,
+				"column": 14,
+				"error": "r.Status undefined (type *OpenstackCredsReconciler has no field or method Status)"
+			},
+			{
+				"line": 294,
+				"column": 15,
+				"error": "r.List undefined (type *OpenstackCredsReconciler has no field or method List)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/rdmdisk_controller.go": [
+			{
+				"line": 26,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/api/meta (invalid package name: \"\")"
+			},
+			{
+				"line": 36,
+				"column": 11,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 86,
+				"column": 14,
+				"error": "r.Get undefined (type *RDMDiskReconciler has no field or method Get)"
+			},
+			{
+				"line": 135,
+				"column": 15,
+				"error": "r.Status undefined (type *RDMDiskReconciler has no field or method Status)"
+			},
+			{
+				"line": 148,
+				"column": 14,
+				"error": "r.Status undefined (type *RDMDiskReconciler has no field or method Status)"
+			},
+			{
+				"line": 165,
+				"column": 15,
+				"error": "r.Status undefined (type *RDMDiskReconciler has no field or method Status)"
+			},
+			{
+				"line": 182,
+				"column": 15,
+				"error": "r.Get undefined (type *RDMDiskReconciler has no field or method Get)"
+			},
+			{
+				"line": 213,
+				"column": 15,
+				"error": "r.Status undefined (type *RDMDiskReconciler has no field or method Status)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/rollingmigrationplan_controller.go": [
+			{
+				"line": 27,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/labels (invalid package name: \"\")"
+			},
+			{
+				"line": 60,
+				"column": 14,
+				"error": "r.Get undefined (type *RollingMigrationPlanReconciler has no field or method Get)"
+			},
+			{
+				"line": 153,
+				"column": 16,
+				"error": "r.Status undefined (type *RollingMigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 209,
+				"column": 15,
+				"error": "r.Delete undefined (type *RollingMigrationPlanReconciler has no field or method Delete)"
+			},
+			{
+				"line": 223,
+				"column": 15,
+				"error": "r.Delete undefined (type *RollingMigrationPlanReconciler has no field or method Delete)"
+			},
+			{
+				"line": 256,
+				"column": 18,
+				"error": "r.Delete undefined (type *RollingMigrationPlanReconciler has no field or method Delete)"
+			},
+			{
+				"line": 270,
+				"column": 18,
+				"error": "r.Delete undefined (type *RollingMigrationPlanReconciler has no field or method Delete)"
+			},
+			{
+				"line": 384,
+				"column": 15,
+				"error": "r.Status undefined (type *RollingMigrationPlanReconciler has no field or method Status)"
+			},
+			{
+				"line": 416,
+				"column": 11,
+				"error": "r.List undefined (type *RollingMigrationPlanReconciler has no field or method List)"
+			},
+			{
+				"line": 443,
+				"column": 11,
+				"error": "r.Status undefined (type *RollingMigrationPlanReconciler has no field or method Status)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/storagemapping_controller.go": [
+			{
+				"line": 48,
+				"column": 14,
+				"error": "r.Get undefined (type *StorageMappingReconciler has no field or method Get)"
+			},
+			{
+				"line": 60,
+				"column": 13,
+				"error": "r.Status undefined (type *StorageMappingReconciler has no field or method Status)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/internal/controller/vmwarecreds_controller.go": [
+			{
+				"line": 60,
+				"column": 14,
+				"error": "r.Get undefined (type *VMwareCredsReconciler has no field or method Get)"
+			},
+			{
+				"line": 97,
+				"column": 21,
+				"error": "r.Status undefined (type *VMwareCredsReconciler has no field or method Status)"
+			},
+			{
+				"line": 116,
+				"column": 14,
+				"error": "r.Status undefined (type *VMwareCredsReconciler has no field or method Status)"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go": [
+			{
+				"line": 7,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 8,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/scope/bmconfigscope.go": [
+			{
+				"line": 7,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 9,
+				"column": 2,
+				"error": "could not import github.com/go-logr/logr (invalid package name: \"\")"
+			},
+			{
+				"line": 10,
+				"column": 7,
+				"error": "could not import sigs.k8s.io/controller-runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/sdk/keystone/authenticator.go": [
+			{
+				"line": 12,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 12,
+				"error": "could not import k8s.io/apimachinery/pkg/api/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/apis/meta/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/types (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 2,
+				"error": "could not import k8s.io/utils/ptr (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/sdk/keystone/endpoints.go": [
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import go.uber.org/zap (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/sdk/keystone/util.go": [
+			{
+				"line": 9,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 10,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/sdk/pcd (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/sdk/pcd/util.go": [
+			{
+				"line": 8,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/sdk/resmgr/resmgr.go": [
+			{
+				"line": 15,
+				"column": 12,
+				"error": "could not import k8s.io/apimachinery/pkg/api/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/sdk/resmgr/types.go": [
+			{
+				"line": 7,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/sdk/keystone (invalid package name: \"\")"
+			},
+			{
+				"line": 8,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/sdk/pcd (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/bmprovisionerutils.go": [
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 8,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/scope (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/sdk/keystone (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/sdk/pcd (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/pkg/sdk/resmgr (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 12,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers (invalid package name: \"\")"
+			},
+			{
+				"line": 28,
+				"column": 4,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers/base (invalid package name: \"\")"
+			},
+			{
+				"line": 30,
+				"column": 4,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers/maas (invalid package name: \"\")"
+			},
+			{
+				"line": 31,
+				"column": 2,
+				"error": "could not import gopkg.in/yaml.v3 (invalid package name: \"\")"
+			},
+			{
+				"line": 32,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 33,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/apis/meta/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 34,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/types (invalid package name: \"\")"
+			},
+			{
+				"line": 35,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			},
+			{
+				"line": 36,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/controller/controllerutil (invalid package name: \"\")"
+			},
+			{
+				"line": 37,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/log (invalid package name: \"\")"
+			},
+			{
+				"line": 190,
+				"column": 12,
+				"error": "undefined: yaml"
+			},
+			{
+				"line": 194,
+				"column": 12,
+				"error": "undefined: yaml"
+			},
+			{
+				"line": 202,
+				"column": 17,
+				"error": "undefined: yaml"
+			},
+			{
+				"line": 238,
+				"column": 2,
+				"error": "declared and not used: mergedCloudInit"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/credutils.go": [
+			{
+				"line": 17,
+				"column": 14,
+				"error": "could not import github.com/gophercloud/gophercloud (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/blockstorage/extensions/schedulerstats (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/blockstorage/v3/volumetypes (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/flavors (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/extensions/security/groups (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/networks (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/ports (invalid package name: \"\")"
+			},
+			{
+				"line": 27,
+				"column": 12,
+				"error": "could not import k8s.io/apimachinery/pkg/api/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 33,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/identity/v3/projects (invalid package name: \"\")"
+			},
+			{
+				"line": 36,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/k8sutils (invalid package name: \"\")"
+			},
+			{
+				"line": 37,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/find (invalid package name: \"\")"
+			},
+			{
+				"line": 38,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/object (invalid package name: \"\")"
+			},
+			{
+				"line": 39,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/property (invalid package name: \"\")"
+			},
+			{
+				"line": 40,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/session (invalid package name: \"\")"
+			},
+			{
+				"line": 41,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/session/cache (invalid package name: \"\")"
+			},
+			{
+				"line": 42,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25 (invalid package name: \"\")"
+			},
+			{
+				"line": 43,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/mo (invalid package name: \"\")"
+			},
+			{
+				"line": 44,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/types (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/metadata_utils.go": [
+			{
+				"line": 15,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/servers (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/migrationplanutils.go": [
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/util/validation (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/openstackutils.go": [
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/blockstorage/v3/volumes (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/pcdutils.go": [
+			{
+				"line": 18,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/labels (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/rollingmigrationutils.go": [
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import k8s.io/klog/v2 (invalid package name: \"\")"
+			},
+			{
+				"line": 502,
+				"column": 2,
+				"error": "undefined: klog"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/vjailbreaknodeutils.go": [
+			{
+				"line": 17,
+				"column": 16,
+				"error": "could not import github.com/hashicorp/go-retryablehttp (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 14,
+				"error": "could not import k8s.io/apimachinery/pkg/util/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 17,
+				"error": "could not import k8s.io/client-go/kubernetes/scheme (invalid package name: \"\")"
+			},
+			{
+				"line": 26,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/rest (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/vmwareutils.go": [
+			{
+				"line": 71,
+				"column": 2,
+				"error": "declared and not used: clusterk8sName"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/k8s/migration/test/utils/utils.go": [
+			{
+				"line": 27,
+				"column": 4,
+				"error": "could not import github.com/onsi/ginkgo/v2 (invalid package name: \"\")"
+			},
+			{
+				"line": 40,
+				"column": 27,
+				"error": "undefined: GinkgoWriter"
+			},
+			{
+				"line": 59,
+				"column": 28,
+				"error": "undefined: GinkgoWriter"
+			},
+			{
+				"line": 66,
+				"column": 27,
+				"error": "undefined: GinkgoWriter"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/api/mock/mock_bmc.go": [
+			{
+				"line": 16,
+				"column": 10,
+				"error": "could not import github.com/bougou/go-ipmi (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 10,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 12,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 9,
+				"error": "could not import go.uber.org/mock/gomock (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/api/proto/v1/service/api.pb.go": [
+			{
+				"line": 13,
+				"column": 4,
+				"error": "could not import github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 4,
+				"error": "could not import google.golang.org/genproto/googleapis/api/annotations (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 15,
+				"error": "could not import google.golang.org/protobuf/reflect/protoreflect (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 12,
+				"error": "could not import google.golang.org/protobuf/runtime/protoimpl (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/api/proto/v1/service/api.pb.gw.go": [
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import github.com/grpc-ecosystem/grpc-gateway/v2/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/grpc-ecosystem/grpc-gateway/v2/utilities (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import google.golang.org/grpc (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import google.golang.org/grpc/codes (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import google.golang.org/grpc/grpclog (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import google.golang.org/grpc/metadata (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import google.golang.org/grpc/status (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import google.golang.org/protobuf/proto (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/cli/provider.go": [
+			{
+				"line": 9,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			},
+			{
+				"line": 10,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/utils/tableprinter (invalid package name: \"\")"
+			},
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import github.com/sirupsen/logrus (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/spf13/cobra (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/cli/serve.go": [
+			{
+				"line": 12,
+				"column": 10,
+				"error": "could not import github.com/mitchellh/go-homedir (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/server (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 2,
+				"error": "could not import github.com/spf13/viper (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/cli/vcenter.go": [
+			{
+				"line": 8,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/targets/vcenter (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/cli/vpwctl.go": [
+			{
+				"line": 8,
+				"column": 4,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers/base (invalid package name: \"\")"
+			},
+			{
+				"line": 9,
+				"column": 4,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers/maas (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/cmd/vpwctl.go": [
+			{
+				"line": 7,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/cli (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/sdk/providers/base/base.go": [
+			{
+				"line": 7,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			},
+			{
+				"line": 8,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/sdk/providers/ironic/ironic.go": [
+			{
+				"line": 4,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers (invalid package name: \"\")"
+			},
+			{
+				"line": 5,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers/base (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/sdk/providers/maas/maas.go": [
+			{
+				"line": 8,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 10,
+				"column": 7,
+				"error": "could not import github.com/bougou/go-ipmi (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			},
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers/base (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 2,
+				"error": "could not import github.com/sirupsen/logrus (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/sdk/providers/maas/maas_client.go": [
+			{
+				"line": 12,
+				"column": 15,
+				"error": "could not import github.com/canonical/gomaasclient/client (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/canonical/gomaasclient/entity (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/sdk/providers/providers.go": [
+			{
+				"line": 8,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/sdk/targets/targets.go": [
+			{
+				"line": 8,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/sdk/targets/vcenter/vcenter.go": [
+			{
+				"line": 9,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			},
+			{
+				"line": 10,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/targets (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import github.com/sirupsen/logrus (invalid package name: \"\")"
+			},
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/find (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/view (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/mo (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/types (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/server/providers.go": [
+			{
+				"line": 7,
+				"column": 6,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/api/proto/v1/service (invalid package name: \"\")"
+			},
+			{
+				"line": 8,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/providers (invalid package name: \"\")"
+			},
+			{
+				"line": 9,
+				"column": 2,
+				"error": "could not import github.com/sirupsen/logrus (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/server/server.go": [
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/grpc-ecosystem/grpc-gateway/v2/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/openapiv3 (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import google.golang.org/grpc (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import google.golang.org/grpc/credentials/insecure (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import google.golang.org/grpc/reflection (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/server/target_vcenter.go": [
+			{
+				"line": 7,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/sdk/targets (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/server/version.go": [
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import github.com/juju/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/upgrade (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 10,
+				"error": "could not import github.com/platform9/vjailbreak/pkg/vpwned/version (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 9,
+				"error": "could not import k8s.io/api/apps/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 18,
+				"error": "could not import k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 10,
+				"error": "could not import k8s.io/apimachinery/pkg/api/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/apis/meta/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime/schema (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 14,
+				"error": "could not import k8s.io/apimachinery/pkg/util/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/dynamic (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 17,
+				"error": "could not import k8s.io/client-go/kubernetes/scheme (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/rest (invalid package name: \"\")"
+			},
+			{
+				"line": 26,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/util/retry (invalid package name: \"\")"
+			},
+			{
+				"line": 27,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/server/vjailbreak_proxy.go": [
+			{
+				"line": 10,
+				"column": 14,
+				"error": "could not import github.com/gophercloud/gophercloud (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 12,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack (invalid package name: \"\")"
+			},
+			{
+				"line": 12,
+				"column": 8,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/ports (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 9,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 11,
+				"error": "could not import k8s.io/apimachinery/pkg/types (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/upgrade/version_checker.go": [
+			{
+				"line": 10,
+				"column": 2,
+				"error": "could not import github.com/google/go-github/v63/github (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import golang.org/x/mod/semver (invalid package name: \"\")"
+			},
+			{
+				"line": 12,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/apis/meta/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/kubernetes (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/rest (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/upgrade/version_validator.go": [
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/controller/controllerutil (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 11,
+				"error": "could not import sigs.k8s.io/yaml (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import gopkg.in/yaml.v2 (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 9,
+				"error": "could not import k8s.io/api/apps/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 18,
+				"error": "could not import k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 10,
+				"error": "could not import k8s.io/apimachinery/pkg/api/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 11,
+				"error": "could not import k8s.io/apimachinery/pkg/util/yaml (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/types (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/apis/meta/v1/unstructured (invalid package name: \"\")"
+			},
+			{
+				"line": 26,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime/schema (invalid package name: \"\")"
+			},
+			{
+				"line": 27,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime/serializer/json (invalid package name: \"\")"
+			},
+			{
+				"line": 28,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/dynamic (invalid package name: \"\")"
+			},
+			{
+				"line": 29,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/kubernetes/scheme (invalid package name: \"\")"
+			},
+			{
+				"line": 31,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			},
+			{
+				"line": 32,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/util/retry (invalid package name: \"\")"
+			},
+			{
+				"line": 430,
+				"column": 12,
+				"error": "undefined: yaml"
+			},
+			{
+				"line": 751,
+				"column": 12,
+				"error": "undefined: yaml"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-cli/cmd/generate.go": [
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import github.com/spf13/cobra (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import golang.org/x/term (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 2,
+				"error": "could not import gopkg.in/yaml.v2 (invalid package name: \"\")"
+			},
+			{
+				"line": 215,
+				"column": 29,
+				"error": "undefined: yaml"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-cli/main.go": [
+			{
+				"line": 4,
+				"column": 2,
+				"error": "could not import platform9/v2v-cli/cmd (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/main.go": [
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/migrate (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/nbd (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/openstack (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/reporter (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vcenter (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vm (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/migrate/migrate.go": [
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/flavors (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/nbd (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/openstack (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/k8sutils (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 26,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils/vmutils (invalid package name: \"\")"
+			},
+			{
+				"line": 27,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/reporter (invalid package name: \"\")"
+			},
+			{
+				"line": 28,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vcenter (invalid package name: \"\")"
+			},
+			{
+				"line": 29,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/virtv2v (invalid package name: \"\")"
+			},
+			{
+				"line": 30,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vm (invalid package name: \"\")"
+			},
+			{
+				"line": 31,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			},
+			{
+				"line": 33,
+				"column": 10,
+				"error": "could not import github.com/prometheus-community/pro-bing (invalid package name: \"\")"
+			},
+			{
+				"line": 34,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/types (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/nbd/nbdops.go": [
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import golang.org/x/sys/unix (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/object (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/types (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import libguestfs.org/libnbd (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/nbd/nbdops_mock.go": [
+			{
+				"line": 11,
+				"column": 9,
+				"error": "could not import github.com/golang/mock/gomock (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/openstack/openstackops.go": [
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/k8sutils (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vm (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/blockstorage/v3/volumes (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/flavors (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/servers (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/networks (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/ports (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/openstack/openstackops_mock.go": [
+			{
+				"line": 10,
+				"column": 9,
+				"error": "could not import github.com/golang/mock/gomock (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/k8sutils/k8sutils.go": [
+			{
+				"line": 8,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 9,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 10,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/types (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 14,
+				"error": "could not import k8s.io/apimachinery/pkg/util/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 17,
+				"error": "could not import k8s.io/client-go/kubernetes/scheme (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/rest (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 9,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/nbdutils.go": [
+			{
+				"line": 10,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/openstackopsutils.go": [
+			{
+				"line": 17,
+				"column": 16,
+				"error": "could not import github.com/hashicorp/go-retryablehttp (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/k8sutils (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vm (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack (invalid package name: \"\")"
+			},
+			{
+				"line": 26,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/blockstorage/extensions/volumeactions (invalid package name: \"\")"
+			},
+			{
+				"line": 27,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/blockstorage/v3/volumes (invalid package name: \"\")"
+			},
+			{
+				"line": 28,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/bootfromvolume (invalid package name: \"\")"
+			},
+			{
+				"line": 29,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/volumeattach (invalid package name: \"\")"
+			},
+			{
+				"line": 30,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/flavors (invalid package name: \"\")"
+			},
+			{
+				"line": 31,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/compute/v2/servers (invalid package name: \"\")"
+			},
+			{
+				"line": 32,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/identity/v3/projects (invalid package name: \"\")"
+			},
+			{
+				"line": 33,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/extensions/security/groups (invalid package name: \"\")"
+			},
+			{
+				"line": 34,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/networks (invalid package name: \"\")"
+			},
+			{
+				"line": 35,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/networking/v2/ports (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/utils.go": [
+			{
+				"line": 11,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 14,
+				"error": "could not import k8s.io/apimachinery/pkg/util/runtime (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 17,
+				"error": "could not import k8s.io/client-go/kubernetes/scheme (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/rest (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/vcenterutils.go": [
+			{
+				"line": 10,
+				"column": 5,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 11,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/types (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/vmutils/vmutils.go": [
+			{
+				"line": 6,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 7,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 8,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/xml (invalid package name: \"\")"
+			},
+			{
+				"line": 9,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vm (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/reporter/reporter.go": [
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 9,
+				"error": "could not import k8s.io/api/core/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 9,
+				"error": "could not import k8s.io/apimachinery/pkg/apis/meta/v1 (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 2,
+				"error": "could not import k8s.io/apimachinery/pkg/types (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/kubernetes (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import k8s.io/client-go/rest (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/vcenter/vcenterops.go": [
+			{
+				"line": 16,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/k8sutils (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/find (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/object (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/property (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/session/cache (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25 (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/types (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/vcenter/vcenterops_mock.go": [
+			{
+				"line": 11,
+				"column": 9,
+				"error": "could not import github.com/golang/mock/gomock (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/virtv2v/virtv2vops.go": [
+			{
+				"line": 23,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 24,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/utils (invalid package name: \"\")"
+			},
+			{
+				"line": 25,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vm (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/virtv2v/virtv2vops_mock.go": [
+			{
+				"line": 11,
+				"column": 9,
+				"error": "could not import github.com/golang/mock/gomock (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/vm/vmops.go": [
+			{
+				"line": 12,
+				"column": 2,
+				"error": "could not import github.com/gophercloud/gophercloud/openstack/blockstorage/v3/volumes (invalid package name: \"\")"
+			},
+			{
+				"line": 13,
+				"column": 2,
+				"error": "could not import github.com/pkg/errors (invalid package name: \"\")"
+			},
+			{
+				"line": 14,
+				"column": 21,
+				"error": "could not import github.com/platform9/vjailbreak/k8s/migration/api/v1alpha1 (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/constants (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/pkg/k8sutils (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import github.com/platform9/vjailbreak/v2v-helper/vcenter (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/object (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/property (invalid package name: \"\")"
+			},
+			{
+				"line": 20,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/methods (invalid package name: \"\")"
+			},
+			{
+				"line": 21,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/mo (invalid package name: \"\")"
+			},
+			{
+				"line": 22,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/types (invalid package name: \"\")"
+			},
+			{
+				"line": 23,
+				"column": 12,
+				"error": "could not import sigs.k8s.io/controller-runtime/pkg/client (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/v2v-helper/vm/vmops_mock.go": [
+			{
+				"line": 10,
+				"column": 9,
+				"error": "could not import github.com/golang/mock/gomock (invalid package name: \"\")"
+			}
+		],
+		"/home/runner/work/vjailbreak/vjailbreak/vm_metadata_export/main.go": [
+			{
+				"line": 14,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/find (invalid package name: \"\")"
+			},
+			{
+				"line": 15,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/property (invalid package name: \"\")"
+			},
+			{
+				"line": 16,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/session/cache (invalid package name: \"\")"
+			},
+			{
+				"line": 17,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25 (invalid package name: \"\")"
+			},
+			{
+				"line": 18,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/mo (invalid package name: \"\")"
+			},
+			{
+				"line": 19,
+				"column": 2,
+				"error": "could not import github.com/vmware/govmomi/vim25/types (invalid package name: \"\")"
+			}
+		]
+	},
+	"Issues": [
+		{
+			"severity": "HIGH",
+			"confidence": "MEDIUM",
+			"cwe": {
+				"id": "338",
+				"url": "https://cwe.mitre.org/data/definitions/338.html"
+			},
+			"rule_id": "G404",
+			"details": "Use of weak random number generator (math/rand or math/rand/v2 instead of crypto/rand)",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/reporter/reporter.go",
+			"code": "117: \tfor i := range b {\n118: \t\tb[i] = charset[rand.Intn(len(charset))]\n119: \t}\n",
+			"line": "118",
+			"column": "18",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "MEDIUM",
+			"cwe": {
+				"id": "338",
+				"url": "https://cwe.mitre.org/data/definitions/338.html"
+			},
+			"rule_id": "G404",
+			"details": "Use of weak random number generator (math/rand or math/rand/v2 instead of crypto/rand)",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-cli/cmd/generate.go",
+			"code": "74: \tfor i := range b {\n75: \t\tb[i] = letters[rand.Intn(len(letters))]\n76: \t}\n",
+			"line": "75",
+			"column": "18",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "295",
+				"url": "https://cwe.mitre.org/data/definitions/295.html"
+			},
+			"rule_id": "G402",
+			"details": "TLS InsecureSkipVerify set true.",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/vcenter/vcenterops.go",
+			"code": "107: \tconn, err := tls.Dial(\"tcp\", host+\":443\", \u0026tls.Config{\n108: \t\tInsecureSkipVerify: true, // Skip verification\n109: \t})\n",
+			"line": "108",
+			"column": "23",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "295",
+				"url": "https://cwe.mitre.org/data/definitions/295.html"
+			},
+			"rule_id": "G402",
+			"details": "TLS InsecureSkipVerify set true.",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/migrate/migrate.go",
+			"code": "943: \t\tTransport: \u0026http.Transport{\n944: \t\t\tTLSClientConfig: \u0026tls.Config{InsecureSkipVerify: true},\n945: \t\t},\n",
+			"line": "944",
+			"column": "53",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "295",
+				"url": "https://cwe.mitre.org/data/definitions/295.html"
+			},
+			"rule_id": "G402",
+			"details": "TLS InsecureSkipVerify set true.",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/bmprovisionerutils.go",
+			"code": "453: \t\ttransCfg := \u0026http.Transport{\n454: \t\t\tTLSClientConfig: \u0026tls.Config{InsecureSkipVerify: true}, //nolint:gosec // G402: Accepting insecure connections when needed\n455: \t\t}\n",
+			"line": "454",
+			"column": "53",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "295",
+				"url": "https://cwe.mitre.org/data/definitions/295.html"
+			},
+			"rule_id": "G402",
+			"details": "TLS InsecureSkipVerify set true.",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/sdk/keystone/keystone.go",
+			"code": "293: \t\ttransport := \u0026http.Transport{\n294: \t\t\tTLSClientConfig: \u0026tls.Config{InsecureSkipVerify: true}, //nolint:gosec // G402: Accepting insecure connections for airgap environments\n295: \t\t}\n",
+			"line": "294",
+			"column": "53",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "798",
+				"url": "https://cwe.mitre.org/data/definitions/798.html"
+			},
+			"rule_id": "G101",
+			"details": "Potential hardcoded credentials",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go",
+			"code": "138: \t// K3sTokenFileLocation is the location of the k3s token file\n139: \tK3sTokenFileLocation = \"/etc/pf9/k3s/token\" //nolint:gosec // not a password string\n140: \n",
+			"line": "139",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "798",
+				"url": "https://cwe.mitre.org/data/definitions/798.html"
+			},
+			"rule_id": "G101",
+			"details": "Potential hardcoded credentials",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go",
+			"code": "114: \t// VMwareCredsFinalizer is the finalizer for vmware credentials\n115: \tVMwareCredsFinalizer = \"vmwarecreds.k8s.pf9.io/finalizer\" //nolint:gosec // not a password string\n116: \n",
+			"line": "115",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "798",
+				"url": "https://cwe.mitre.org/data/definitions/798.html"
+			},
+			"rule_id": "G101",
+			"details": "Potential hardcoded credentials",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go",
+			"code": "105: \t// OpenstackCredsFinalizer is the finalizer for openstack credentials\n106: \tOpenstackCredsFinalizer = \"openstackcreds.k8s.pf9.io/finalizer\" //nolint:gosec // not a password string\n107: \n",
+			"line": "106",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "798",
+				"url": "https://cwe.mitre.org/data/definitions/798.html"
+			},
+			"rule_id": "G101",
+			"details": "Potential hardcoded credentials",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go",
+			"code": "60: \t// IsPCDCredsLabel is the label for pcd credentials\n61: \tIsPCDCredsLabel = \"vjailbreak.k8s.pf9.io/is-pcd\" //nolint:gosec // not a password string\n62: \n",
+			"line": "61",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "798",
+				"url": "https://cwe.mitre.org/data/definitions/798.html"
+			},
+			"rule_id": "G101",
+			"details": "Potential hardcoded credentials",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go",
+			"code": "57: \t// OpenstackCredsLabel is the label for openstack credentials\n58: \tOpenstackCredsLabel = \"vjailbreak.k8s.pf9.io/openstackcreds\" //nolint:gosec // not a password string\n59: \n",
+			"line": "58",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "798",
+				"url": "https://cwe.mitre.org/data/definitions/798.html"
+			},
+			"rule_id": "G101",
+			"details": "Potential hardcoded credentials",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go",
+			"code": "54: \t// VMwareCredsLabel is the label for vmware credentials\n55: \tVMwareCredsLabel = \"vjailbreak.k8s.pf9.io/vmwarecreds\" //nolint:gosec // not a password string\n56: \n",
+			"line": "55",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "798",
+				"url": "https://cwe.mitre.org/data/definitions/798.html"
+			},
+			"rule_id": "G101",
+			"details": "Potential hardcoded credentials",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go",
+			"code": "33: \t// VMwareCredsControllerName is the name of the vmware credentials controller\n34: \tVMwareCredsControllerName = \"vmwarecreds-controller\" //nolint:gosec // not a password string\n35: \n",
+			"line": "34",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "HIGH",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "798",
+				"url": "https://cwe.mitre.org/data/definitions/798.html"
+			},
+			"rule_id": "G101",
+			"details": "Potential hardcoded credentials",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/constants/constants.go",
+			"code": "30: \t// OpenstackCredsControllerName is the name of the openstack credentials controller\n31: \tOpenstackCredsControllerName = \"openstackcreds-controller\" //nolint:gosec // not a password string\n32: \n",
+			"line": "31",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "328",
+				"url": "https://cwe.mitre.org/data/definitions/328.html"
+			},
+			"rule_id": "G401",
+			"details": "Use of weak cryptographic primitive",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/vcenter/vcenterops.go",
+			"code": "126: \t\tthumbprint += hex.EncodeToString([]byte{thumbyte})\n127: \t\tif idx \u003c len(sha1.Sum(cert.Raw))-1 {\n128: \t\t\tthumbprint += \":\"\n",
+			"line": "127",
+			"column": "16",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "328",
+				"url": "https://cwe.mitre.org/data/definitions/328.html"
+			},
+			"rule_id": "G401",
+			"details": "Use of weak cryptographic primitive",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/vcenter/vcenterops.go",
+			"code": "124: \n125: \tfor idx, thumbyte := range sha1.Sum(cert.Raw) {\n126: \t\tthumbprint += hex.EncodeToString([]byte{thumbyte})\n",
+			"line": "125",
+			"column": "29",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/virtv2v/virtv2vops.go",
+			"code": "99: \t\t}\n100: \t\tcmd := exec.Command(\"ntfsfix\", partition)\n101: \t\tlog.Printf(\"Executing %s\", cmd.String())\n",
+			"line": "100",
+			"column": "10",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-cli/cmd/generate.go",
+			"code": "298: \t\t// Get the pod logs\n299: \t\tlogsCmd := exec.Command(\"kubectl\", \"logs\", \"-f\", podName)\n300: \t\tlogsCmd.Stdout = os.Stdout\n",
+			"line": "299",
+			"column": "14",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/test/utils/utils.go",
+			"code": "120: \tkindOptions := []string{\"load\", \"docker-image\", imageName, \"--name\", cluster}\n121: \tcmd := exec.Command(\"kind\", kindOptions...)\n122: \t_, err := Run(cmd)\n",
+			"line": "121",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/test/utils/utils.go",
+			"code": "97: \turl := fmt.Sprintf(certmanagerURLTmpl, certmanagerVersion)\n98: \tcmd := exec.Command(\"kubectl\", \"apply\", \"-f\", url)\n99: \tif _, err := Run(cmd); err != nil {\n",
+			"line": "98",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/test/utils/utils.go",
+			"code": "88: \turl := fmt.Sprintf(certmanagerURLTmpl, certmanagerVersion)\n89: \tcmd := exec.Command(\"kubectl\", \"delete\", \"-f\", url)\n90: \tif _, err := Run(cmd); err != nil {\n",
+			"line": "89",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/test/utils/utils.go",
+			"code": "79: \turl := fmt.Sprintf(prometheusOperatorURL, prometheusOperatorVersion)\n80: \tcmd := exec.Command(\"kubectl\", \"delete\", \"-f\", url)\n81: \tif _, err := Run(cmd); err != nil {\n",
+			"line": "80",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/test/utils/utils.go",
+			"code": "47: \turl := fmt.Sprintf(prometheusOperatorURL, prometheusOperatorVersion)\n48: \tcmd := exec.Command(\"kubectl\", \"create\", \"-f\", url)\n49: \t_, err := Run(cmd)\n",
+			"line": "48",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with a potential tainted input or cmd arguments",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/nbd/nbdops.go",
+			"code": "162: \n163: \tcmd := exec.CommandContext(ctx, \"nbdcopy\", \"--progress=3\", \"--target-is-zero\", generateSockUrl(nbdserver.tmp_dir), dest)\n164: \tcmd.ExtraFiles = []*os.File{progressWrite}\n",
+			"line": "163",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with a potential tainted input or cmd arguments",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/nbd/nbdops.go",
+			"code": "94: \n95: \tcmd := exec.Command(\n96: \t\t\"nbdkit\",\n97: \t\t\"--exit-with-parent\",\n98: \t\t\"--readonly\",\n99: \t\t\"--foreground\",\n100: \t\tfmt.Sprintf(\"--unix=%s\", socket),\n101: \t\tfmt.Sprintf(\"--pidfile=%s\", pidFile),\n102: \t\t\"--verbose\",\n103: \t\t\"-D vddk.datapath=0\",\n104: \t\t\"-D nbdkit.backend.datapath=0\",\n105: \t\t\"vddk\",\n106: \t\t\"libdir=/home/fedora/vmware-vix-disklib-distrib\",\n107: \t\tfmt.Sprintf(\"server=%s\", server),\n108: \t\tfmt.Sprintf(\"user=%s\", username),\n109: \t\tfmt.Sprintf(\"password=%s\", password),\n110: \t\tfmt.Sprintf(\"thumbprint=%s\", thumbprint),\n111: \t\t\"compression=fastlz\",\n112: \t\t\"config=/home/fedora/vddk.conf\",\n113: \t\t\"transports=file:nbdssl:nbd\",\n114: \t\tfmt.Sprintf(\"vm=moref=%s\", vm.Reference().Value),\n115: \t\tfmt.Sprintf(\"snapshot=%s\", snapref),\n116: \t\tfile,\n117: \t)\n118: \n",
+			"line": "95-117",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with a potential tainted input or cmd arguments",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-cli/cmd/generate.go",
+			"code": "288: \t\t// Get the pod with the matching label\n289: \t\tgetPodCmd := exec.Command(\"kubectl\", \"get\", \"pod\", \"-l\", \"vm-name=\"+vmName, \"-o\", \"jsonpath={.items[0].metadata.name}\")\n290: \t\tpodNameBytes, err := getPodCmd.Output()\n",
+			"line": "289",
+			"column": "16",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "78",
+				"url": "https://cwe.mitre.org/data/definitions/78.html"
+			},
+			"rule_id": "G204",
+			"details": "Subprocess launched with a potential tainted input or cmd arguments",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/upgrade/version_checker.go",
+			"code": "146: \tfor _, imageName := range images {\n147: \t\tcmd := exec.CommandContext(ctx, \"skopeo\", \"inspect\", \"docker://\"+imageName)\n148: \t\tif err := cmd.Run(); err != nil {\n",
+			"line": "147",
+			"column": "10",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/vm_metadata_export/main.go",
+			"code": "55: \t// Create the CSV file\n56: \tfile, err := os.Create(fileName)\n57: \tif err != nil {\n",
+			"line": "56",
+			"column": "15",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/virtv2v/virtv2vops.go",
+			"code": "126: \t// Create the file\n127: \tout, err := os.Create(filePath)\n128: \tif err != nil {\n",
+			"line": "127",
+			"column": "14",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/xml/xml.go",
+			"code": "65: \n66: \toutputFileHandle, err := os.Create(outputFile)\n67: \tif err != nil {\n",
+			"line": "66",
+			"column": "27",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/utils.go",
+			"code": "93: \tlogFilePath := fmt.Sprintf(\"%s/%s.log\", constants.LogsDir, migrationName)\n94: \tlogFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)\n95: \tif err != nil {\n",
+			"line": "94",
+			"column": "18",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/nbdutils.go",
+			"code": "152: \t\tvar err error\n153: \t\tlogFile, err = os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)\n154: \t\tif err != nil {\n",
+			"line": "153",
+			"column": "18",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/nbd/nbdops.go",
+			"code": "383: \n384: \tfd, err := os.OpenFile(path, os.O_WRONLY, 0644)\n385: \tif err != nil {\n",
+			"line": "384",
+			"column": "13",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-cli/cmd/generate.go",
+			"code": "251: func parseAdminFile(filename string) (map[string]string, error) {\n252: \tfile, err := os.Open(filename)\n253: \tif err != nil {\n",
+			"line": "252",
+			"column": "15",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/server/server.go",
+			"code": "43: \t\tif _, err := os.Stat(tp); err == nil {\n44: \t\t\tdata, readE = os.ReadFile(tp)\n45: \t\t\tif readE != nil {\n",
+			"line": "44",
+			"column": "18",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "22",
+				"url": "https://cwe.mitre.org/data/definitions/22.html"
+			},
+			"rule_id": "G304",
+			"details": "Potential file inclusion via variable",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/k8s/migration/pkg/utils/bmprovisionerutils.go",
+			"code": "308: \t}\n309: \tcloudInitTemplateStr, err := os.ReadFile(cloudInitTemplateLocation) //nolint: gosec\n310: \tif err != nil {\n",
+			"line": "309",
+			"column": "31",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "LOW",
+			"cwe": {
+				"id": "400",
+				"url": "https://cwe.mitre.org/data/definitions/400.html"
+			},
+			"rule_id": "G112",
+			"details": "Potential Slowloris Attack because ReadHeaderTimeout is not configured in the http.Server",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/server/server.go",
+			"code": "146: \tlogrus.Info(\"starting http server.....\")\n147: \thttpServer = \u0026http.Server{\n148: \t\tAddr:    host + \":\" + apiPort,\n149: \t\tHandler: mux,\n150: \t}\n151: \tif err := httpServer.ListenAndServe(); err != http.ErrServerClosed {\n",
+			"line": "147-150",
+			"column": "16",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "MEDIUM",
+			"cwe": {
+				"id": "88",
+				"url": "https://cwe.mitre.org/data/definitions/88.html"
+			},
+			"rule_id": "G107",
+			"details": "Potential HTTP request made with variable url",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/virtv2v/virtv2vops.go",
+			"code": "114: \t// Get the data from the URL\n115: \tresp, err := http.Get(url)\n116: \tif err != nil {\n",
+			"line": "115",
+			"column": "15",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "MEDIUM",
+			"cwe": {
+				"id": "88",
+				"url": "https://cwe.mitre.org/data/definitions/88.html"
+			},
+			"rule_id": "G107",
+			"details": "Potential HTTP request made with variable url",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/upgrade/version_validator.go",
+			"code": "732: \turl := fmt.Sprintf(\"https://raw.githubusercontent.com/platform9/vjailbreak/%s/image_builder/configs/version-config.yaml\", tag)\n733: \tresp, err := http.Get(url)\n734: \tif err != nil {\n",
+			"line": "733",
+			"column": "15",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "MEDIUM",
+			"cwe": {
+				"id": "88",
+				"url": "https://cwe.mitre.org/data/definitions/88.html"
+			},
+			"rule_id": "G107",
+			"details": "Potential HTTP request made with variable url",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/pkg/vpwned/upgrade/version_validator.go",
+			"code": "677: \n678: \tresp, err := http.Get(url)\n679: \tif err != nil {\n",
+			"line": "678",
+			"column": "15",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G302",
+			"details": "Expect file permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/utils.go",
+			"code": "93: \tlogFilePath := fmt.Sprintf(\"%s/%s.log\", constants.LogsDir, migrationName)\n94: \tlogFile, err := os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)\n95: \tif err != nil {\n",
+			"line": "94",
+			"column": "18",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G302",
+			"details": "Expect file permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/nbdutils.go",
+			"code": "152: \t\tvar err error\n153: \t\tlogFile, err = os.OpenFile(logFilePath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)\n154: \t\tif err != nil {\n",
+			"line": "153",
+			"column": "18",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G302",
+			"details": "Expect file permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/nbd/nbdops.go",
+			"code": "383: \n384: \tfd, err := os.OpenFile(path, os.O_WRONLY, 0644)\n385: \tif err != nil {\n",
+			"line": "384",
+			"column": "13",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G301",
+			"details": "Expect directory permissions to be 0750 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/utils.go",
+			"code": "87: \t// Ensure the logs directory exists\n88: \tif err := os.MkdirAll(constants.LogsDir, 0755); err != nil {\n89: \t\treturn errors.Wrap(err, \"failed to create logs directory\")\n",
+			"line": "88",
+			"column": "12",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G301",
+			"details": "Expect directory permissions to be 0750 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/nbdutils.go",
+			"code": "112: \tattemptDir := fmt.Sprintf(\"%s/%s\", constants.LogsDir, migrationName)\n113: \tif err := os.MkdirAll(attemptDir, 0755); err != nil {\n114: \t\treturn\n",
+			"line": "113",
+			"column": "12",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G301",
+			"details": "Expect directory permissions to be 0750 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/pkg/utils/nbdutils.go",
+			"code": "106: \t// Ensure logs directory exists\n107: \tif err := os.MkdirAll(constants.LogsDir, 0755); err != nil {\n108: \t\treturn\n",
+			"line": "107",
+			"column": "12",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G306",
+			"details": "Expect WriteFile permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/virtv2v/virtv2vops.go",
+			"code": "434: \n435: \terr := os.WriteFile(\"/home/fedora/70-persistent-net.rules\", []byte(udevRules.String()), 0644)\n436: \tif err != nil {\n",
+			"line": "435",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G306",
+			"details": "Expect WriteFile permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/virtv2v/virtv2vops.go",
+			"code": "293: \tfirstbootscriptpath := fmt.Sprintf(\"/home/fedora/%s.sh\", firstbootscriptname)\n294: \terr := os.WriteFile(firstbootscriptpath, []byte(firstbootscript), 0644)\n295: \tif err != nil {\n",
+			"line": "294",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G306",
+			"details": "Expect WriteFile permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/virtv2v/virtv2vops.go",
+			"code": "268: \t// Create the netplan file\n269: \terr := os.WriteFile(\"/home/fedora/99-wildcard.network\", []byte(netplan), 0644)\n270: \tif err != nil {\n",
+			"line": "269",
+			"column": "9",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G306",
+			"details": "Expect WriteFile permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/nbd/nbdops.go",
+			"code": "86: vixDiskLib.nfcAio.Session.BufCount=4`\n87: \terr = os.WriteFile(configFile, []byte(configContent), 0644)\n88: \tif err != nil {\n",
+			"line": "87",
+			"column": "8",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G306",
+			"details": "Expect WriteFile permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-cli/cmd/generate.go",
+			"code": "232: \t\tpodOutputFile := \"pod.yaml\"\n233: \t\tif err := os.WriteFile(podOutputFile, []byte(podYaml), 0644); err != nil {\n234: \t\t\tlog.Fatalf(\"Error writing Pod YAML file: %v\", err)\n",
+			"line": "233",
+			"column": "13",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "276",
+				"url": "https://cwe.mitre.org/data/definitions/276.html"
+			},
+			"rule_id": "G306",
+			"details": "Expect WriteFile permissions to be 0600 or less",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-cli/cmd/generate.go",
+			"code": "220: \t\tconfigMapOutputFile := \"configmap.yaml\"\n221: \t\tif err := os.WriteFile(configMapOutputFile, configMapYamlData, 0644); err != nil {\n222: \t\t\tlog.Fatalf(\"Error writing ConfigMap YAML file: %v\", err)\n",
+			"line": "221",
+			"column": "13",
+			"nosec": false,
+			"suppressions": null
+		},
+		{
+			"severity": "MEDIUM",
+			"confidence": "HIGH",
+			"cwe": {
+				"id": "327",
+				"url": "https://cwe.mitre.org/data/definitions/327.html"
+			},
+			"rule_id": "G505",
+			"details": "Blocklisted import crypto/sha1: weak cryptographic primitive",
+			"file": "/home/runner/work/vjailbreak/vjailbreak/v2v-helper/vcenter/vcenterops.go",
+			"code": "6: \t\"context\"\n7: \t\"crypto/sha1\"\n8: \t\"crypto/tls\"\n",
+			"line": "7",
+			"column": "2",
+			"nosec": false,
+			"suppressions": null
+		}
+	],
+	"Stats": {
+		"files": 125,
+		"lines": 37583,
+		"nosec": 1,
+		"found": 53
+	},
+	"GosecVersion": "dev"
+}
