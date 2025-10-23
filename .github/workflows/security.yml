@@ -30,6 +30,8 @@ jobs:
       gosec_added_count: ${{ steps.gosec_compare.outputs.added_count }}
       gosec_fixed_count: ${{ steps.gosec_compare.outputs.fixed_count }}
       gosec_baseline_method: ${{ steps.gosec_compare.outputs.baseline_method }}
+      gosec_added_details: ${{ steps.gosec_compare.outputs.added_details }}
+      gosec_fixed_details: ${{ steps.gosec_compare.outputs.fixed_details }}
     permissions:
       contents: write
       pull-requests: write
@@ -173,12 +175,84 @@ jobs:
           echo "Added vulnerabilities: $added_count"
           echo "Fixed vulnerabilities: $fixed_count"
           
+          # Generate detailed vulnerability lists
+          added_details=""
+          fixed_details=""
+          
+          if [[ -f "tmp/current-vulns.txt" && -f "tmp/baseline-vulns.txt" ]]; then
+            # Get added vulnerabilities with details
+            if [[ $added_count -gt 0 ]]; then
+              added_vulns=$(comm -23 tmp/current-vulns.txt tmp/baseline-vulns.txt)
+              added_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract file, line, rule_id from the identifier
+                  file_path=$(echo "$vuln_id" | cut -d':' -f1)
+                  line_num=$(echo "$vuln_id" | cut -d':' -f2)
+                  rule_id=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the report
+                  details=$(jq -r --arg file "$file_path" --arg line "$line_num" --arg rule "$rule_id" '
+                    .Issues[] | select(.file == $file and (.line | tostring) == $line and .rule_id == $rule and (.severity == "HIGH" or .severity == "CRITICAL")) | 
+                    "**File:** `\(.file)` (Line \(.line))\\n**Rule:** \(.rule_id)\\n**Severity:** \(.severity)\\n**Details:** \(.details)\\n"
+                  ' tmp/gosec-report.json)
+                  
+                  if [[ -n "$details" ]]; then
+                    added_details="${added_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$added_vulns"
+            fi
+            
+            # Get fixed vulnerabilities with details  
+            if [[ $fixed_count -gt 0 ]]; then
+              fixed_vulns=$(comm -13 tmp/current-vulns.txt tmp/baseline-vulns.txt)
+              fixed_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract file, line, rule_id from the identifier
+                  file_path=$(echo "$vuln_id" | cut -d':' -f1)
+                  line_num=$(echo "$vuln_id" | cut -d':' -f2)
+                  rule_id=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the baseline report
+                  baseline_report="baseline-reports/gosec-report.json"
+                  if [[ "$baseline_method" == "live_scan" ]]; then
+                    baseline_report="tmp/gosec-report-baseline.json"
+                  fi
+                  
+                  details=$(jq -r --arg file "$file_path" --arg line "$line_num" --arg rule "$rule_id" '
+                    .Issues[] | select(.file == $file and (.line | tostring) == $line and .rule_id == $rule and (.severity == "HIGH" or .severity == "CRITICAL")) | 
+                    "**File:** `\(.file)` (Line \(.line))\\n**Rule:** \(.rule_id)\\n**Severity:** \(.severity)\\n**Details:** \(.details)\\n"
+                  ' "$baseline_report")
+                  
+                  if [[ -n "$details" ]]; then
+                    fixed_details="${fixed_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$fixed_vulns"
+            fi
+          fi
+          
           # Set outputs
           echo "current_count=$current_count" >> "$GITHUB_OUTPUT"
           echo "baseline_count=$baseline_count" >> "$GITHUB_OUTPUT"
           echo "added_count=$added_count" >> "$GITHUB_OUTPUT"
           echo "fixed_count=$fixed_count" >> "$GITHUB_OUTPUT"
           echo "baseline_method=$baseline_method" >> "$GITHUB_OUTPUT"
+          
+          # Set detailed outputs (escape for GitHub Actions)
+          {
+            echo "added_details<<EOF"
+            echo -e "$added_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          
+          {
+            echo "fixed_details<<EOF"
+            echo -e "$fixed_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Display Gosec Vulnerability Report
         if: ${{ steps.scan.outputs.gosec_high_found == 'true' }}
@@ -225,11 +299,15 @@ jobs:
       trivy_added_count: ${{ steps.trivy_compare.outputs.added_count }}
       trivy_fixed_count: ${{ steps.trivy_compare.outputs.fixed_count }}
       trivy_baseline_method: ${{ steps.trivy_compare.outputs.baseline_method }}
+      trivy_added_details: ${{ steps.trivy_compare.outputs.added_details }}
+      trivy_fixed_details: ${{ steps.trivy_compare.outputs.fixed_details }}
       trivy_image_current_count: ${{ steps.trivy_image_compare.outputs.current_count }}
       trivy_image_baseline_count: ${{ steps.trivy_image_compare.outputs.baseline_count }}
       trivy_image_added_count: ${{ steps.trivy_image_compare.outputs.added_count }}
       trivy_image_fixed_count: ${{ steps.trivy_image_compare.outputs.fixed_count }}
       trivy_image_baseline_method: ${{ steps.trivy_image_compare.outputs.baseline_method }}
+      trivy_image_added_details: ${{ steps.trivy_image_compare.outputs.added_details }}
+      trivy_image_fixed_details: ${{ steps.trivy_image_compare.outputs.fixed_details }}
     permissions:
       contents: write
       pull-requests: write
@@ -434,12 +512,88 @@ jobs:
           echo "Added Trivy vulnerabilities: $added_count"
           echo "Fixed Trivy vulnerabilities: $fixed_count"
           
+          # Generate detailed vulnerability lists
+          added_details=""
+          fixed_details=""
+          
+          if [[ -f "tmp/current-trivy-vulns.txt" && -f "tmp/baseline-trivy-vulns.txt" ]]; then
+            # Get added vulnerabilities with details
+            if [[ $added_count -gt 0 ]]; then
+              added_vulns=$(comm -23 tmp/current-trivy-vulns.txt tmp/baseline-trivy-vulns.txt)
+              added_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract target, vuln_id, pkg_name from the identifier
+                  target=$(echo "$vuln_id" | cut -d':' -f1)
+                  vuln_cve=$(echo "$vuln_id" | cut -d':' -f2)
+                  pkg_name=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the report
+                  details=$(jq -r --arg target "$target" --arg vuln "$vuln_cve" --arg pkg "$pkg_name" '
+                    (.Results // []) | .[] | select(.Target == $target) | 
+                    (.Vulnerabilities? // []) | .[] | 
+                    select(.VulnerabilityID == $vuln and .PkgName == $pkg and (.Severity == "HIGH" or .Severity == "CRITICAL")) | 
+                    "**Target:** `\(.Target // $target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+                  ' tmp/trivy-report.json)
+                  
+                  if [[ -n "$details" ]]; then
+                    added_details="${added_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$added_vulns"
+            fi
+            
+            # Get fixed vulnerabilities with details  
+            if [[ $fixed_count -gt 0 ]]; then
+              fixed_vulns=$(comm -13 tmp/current-trivy-vulns.txt tmp/baseline-trivy-vulns.txt)
+              fixed_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract target, vuln_id, pkg_name from the identifier
+                  target=$(echo "$vuln_id" | cut -d':' -f1)
+                  vuln_cve=$(echo "$vuln_id" | cut -d':' -f2)
+                  pkg_name=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the baseline report
+                  baseline_report="baseline-reports/trivy-report.json"
+                  if [[ "$baseline_method" == "live_scan" ]]; then
+                    baseline_report="tmp/trivy-report-baseline.json"
+                  fi
+                  
+                  details=$(jq -r --arg target "$target" --arg vuln "$vuln_cve" --arg pkg "$pkg_name" '
+                    (.Results // []) | .[] | select(.Target == $target) | 
+                    (.Vulnerabilities? // []) | .[] | 
+                    select(.VulnerabilityID == $vuln and .PkgName == $pkg and (.Severity == "HIGH" or .Severity == "CRITICAL")) | 
+                    "**Target:** `\(.Target // $target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+                  ' "$baseline_report")
+                  
+                  if [[ -n "$details" ]]; then
+                    fixed_details="${fixed_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$fixed_vulns"
+            fi
+          fi
+          
           # Set outputs
           echo "current_count=$current_count" >> "$GITHUB_OUTPUT"
           echo "baseline_count=$baseline_count" >> "$GITHUB_OUTPUT"
           echo "added_count=$added_count" >> "$GITHUB_OUTPUT"
           echo "fixed_count=$fixed_count" >> "$GITHUB_OUTPUT"
           echo "baseline_method=$baseline_method" >> "$GITHUB_OUTPUT"
+          
+          # Set detailed outputs (escape for GitHub Actions)
+          {
+            echo "added_details<<EOF"
+            echo -e "$added_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          
+          {
+            echo "fixed_details<<EOF"
+            echo -e "$fixed_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Display Trivy Vulnerability Report
         if: ${{ steps.scan.outputs.trivy_high_found == 'true' }}
@@ -704,12 +858,96 @@ jobs:
           echo "Added Trivy Image vulnerabilities: $added_count"
           echo "Fixed Trivy Image vulnerabilities: $fixed_count"
           
+          # Generate detailed vulnerability lists
+          added_details=""
+          fixed_details=""
+          
+          if [[ -f "tmp/current-image-vulns.txt" && -f "tmp/baseline-image-vulns.txt" ]]; then
+            # Get added vulnerabilities with details
+            if [[ $added_count -gt 0 ]]; then
+              added_vulns=$(comm -23 tmp/current-image-vulns.txt tmp/baseline-image-vulns.txt)
+              added_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract target, vuln_id, pkg_name from the identifier
+                  target=$(echo "$vuln_id" | cut -d':' -f1)
+                  vuln_cve=$(echo "$vuln_id" | cut -d':' -f2)
+                  pkg_name=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the report
+                  details=$(jq -r --arg target "$target" --arg vuln "$vuln_cve" --arg pkg "$pkg_name" '
+                    (.Results // []) | .[] | select(.Target == $target) | 
+                    (.Vulnerabilities? // []) | .[] | 
+                    select(.VulnerabilityID == $vuln and .PkgName == $pkg and (.Severity == "HIGH" or .Severity == "CRITICAL")) | 
+                    "**Image:** `\(.Target // $target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+                  ' tmp/trivy-image-report.json)
+                  
+                  if [[ -n "$details" ]]; then
+                    added_details="${added_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$added_vulns"
+            fi
+            
+            # Get fixed vulnerabilities with details  
+            if [[ $fixed_count -gt 0 ]]; then
+              fixed_vulns=$(comm -13 tmp/current-image-vulns.txt tmp/baseline-image-vulns.txt)
+              fixed_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract target, vuln_id, pkg_name from the identifier
+                  target=$(echo "$vuln_id" | cut -d':' -f1)
+                  vuln_cve=$(echo "$vuln_id" | cut -d':' -f2)
+                  pkg_name=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the baseline report
+                  details=$(jq -r --arg target "$target" --arg vuln "$vuln_cve" --arg pkg "$pkg_name" '
+                    (.Results // []) | .[] | select(.Target == $target) | 
+                    (.Vulnerabilities? // []) | .[] | 
+                    select(.VulnerabilityID == $vuln and .PkgName == $pkg and (.Severity == "HIGH" or .Severity == "CRITICAL")) | 
+                    "**Image:** `\(.Target // $target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+                  ' baseline-reports/trivy-image-report.json)
+                  
+                  if [[ -n "$details" ]]; then
+                    fixed_details="${fixed_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$fixed_vulns"
+            fi
+          elif [[ "$baseline_method" == "no_baseline" && $added_count -gt 0 ]]; then
+            # When no baseline, all current vulnerabilities are treated as "added"
+            added_details=""
+            jq -r '
+              (.Results // []) | .[] | .Target as $target | 
+              (.Vulnerabilities? // []) | .[] | 
+              select(.Severity == "HIGH" or .Severity == "CRITICAL") | 
+              "**Image:** `\($target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+            ' tmp/trivy-image-report.json | while IFS= read -r details; do
+              if [[ -n "$details" ]]; then
+                added_details="${added_details}${details}\\n"
+              fi
+            done
+          fi
+          
           # Set outputs
           echo "current_count=$current_count" >> "$GITHUB_OUTPUT"
           echo "baseline_count=$baseline_count" >> "$GITHUB_OUTPUT"
           echo "added_count=$added_count" >> "$GITHUB_OUTPUT"
           echo "fixed_count=$fixed_count" >> "$GITHUB_OUTPUT"
           echo "baseline_method=$baseline_method" >> "$GITHUB_OUTPUT"
+          
+          # Set detailed outputs (escape for GitHub Actions)
+          {
+            echo "added_details<<EOF"
+            echo -e "$added_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          
+          {
+            echo "fixed_details<<EOF"
+            echo -e "$fixed_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Display Trivy Image Vulnerability Report
         if: ${{ steps.image_scan.outputs.trivy_image_high_found == 'true' }}
@@ -773,6 +1011,14 @@ jobs:
             const trivyMethod = '${{ needs.trivy_scan.outputs.trivy_baseline_method }}' || 'none';
             const trivyImageMethod = '${{ needs.trivy_scan.outputs.trivy_image_baseline_method }}' || 'none';
             
+            // Get detailed vulnerability information
+            const gosecAddedDetails = `${{ needs.gosec_scan.outputs.gosec_added_details }}` || '';
+            const gosecFixedDetails = `${{ needs.gosec_scan.outputs.gosec_fixed_details }}` || '';
+            const trivyAddedDetails = `${{ needs.trivy_scan.outputs.trivy_added_details }}` || '';
+            const trivyFixedDetails = `${{ needs.trivy_scan.outputs.trivy_fixed_details }}` || '';
+            const trivyImageAddedDetails = `${{ needs.trivy_scan.outputs.trivy_image_added_details }}` || '';
+            const trivyImageFixedDetails = `${{ needs.trivy_scan.outputs.trivy_image_fixed_details }}` || '';
+            
             const totalAdded = parseInt(gosecAdded) + parseInt(trivyAdded) + parseInt(trivyImageAdded);
             const totalFixed = parseInt(gosecFixed) + parseInt(trivyFixed) + parseInt(trivyImageFixed);
             const totalCurrent = parseInt(gosecCurrent) + parseInt(trivyCurrent) + parseInt(trivyImageCurrent);
@@ -834,6 +1080,44 @@ jobs:
             - **📦 artifact**: Used stored report from main branch
             - **🔄 live_scan**: Scanned base branch in real-time  
             - **⚠️ no_baseline**: No baseline available (all vulnerabilities treated as new)
+            
+            ${totalAdded > 0 ? `
+            ### 🚨 Added Vulnerabilities
+            
+            ${parseInt(gosecAdded) > 0 ? `
+            #### Gosec (Static Analysis) - ${gosecAdded} Added
+            ${gosecAddedDetails || '*No detailed information available*'}
+            ` : ''}
+            
+            ${parseInt(trivyAdded) > 0 ? `
+            #### Trivy (Dependencies) - ${trivyAdded} Added
+            ${trivyAddedDetails || '*No detailed information available*'}
+            ` : ''}
+            
+            ${parseInt(trivyImageAdded) > 0 ? `
+            #### Trivy (Docker Images) - ${trivyImageAdded} Added
+            ${trivyImageAddedDetails || '*No detailed information available*'}
+            ` : ''}
+            ` : ''}
+            
+            ${totalFixed > 0 ? `
+            ### 🎉 Fixed Vulnerabilities
+            
+            ${parseInt(gosecFixed) > 0 ? `
+            #### Gosec (Static Analysis) - ${gosecFixed} Fixed
+            ${gosecFixedDetails || '*No detailed information available*'}
+            ` : ''}
+            
+            ${parseInt(trivyFixed) > 0 ? `
+            #### Trivy (Dependencies) - ${trivyFixed} Fixed
+            ${trivyFixedDetails || '*No detailed information available*'}
+            ` : ''}
+            
+            ${parseInt(trivyImageFixed) > 0 ? `
+            #### Trivy (Docker Images) - ${trivyImageFixed} Fixed
+            ${trivyImageFixedDetails || '*No detailed information available*'}
+            ` : ''}
+            ` : ''}
             
             ---
             *Only HIGH and CRITICAL severity vulnerabilities are tracked*
