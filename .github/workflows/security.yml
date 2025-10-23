@@ -1011,13 +1011,13 @@ jobs:
             const trivyMethod = '${{ needs.trivy_scan.outputs.trivy_baseline_method }}' || 'none';
             const trivyImageMethod = '${{ needs.trivy_scan.outputs.trivy_image_baseline_method }}' || 'none';
             
-            // Get detailed vulnerability information
-            const gosecAddedDetails = `${{ needs.gosec_scan.outputs.gosec_added_details }}` || '';
-            const gosecFixedDetails = `${{ needs.gosec_scan.outputs.gosec_fixed_details }}` || '';
-            const trivyAddedDetails = `${{ needs.trivy_scan.outputs.trivy_added_details }}` || '';
-            const trivyFixedDetails = `${{ needs.trivy_scan.outputs.trivy_fixed_details }}` || '';
-            const trivyImageAddedDetails = `${{ needs.trivy_scan.outputs.trivy_image_added_details }}` || '';
-            const trivyImageFixedDetails = `${{ needs.trivy_scan.outputs.trivy_image_fixed_details }}` || '';
+            // Get detailed vulnerability information (safely encoded)
+            const gosecAddedDetails = ${{ toJSON(needs.gosec_scan.outputs.gosec_added_details) }} || '';
+            const gosecFixedDetails = ${{ toJSON(needs.gosec_scan.outputs.gosec_fixed_details) }} || '';
+            const trivyAddedDetails = ${{ toJSON(needs.trivy_scan.outputs.trivy_added_details) }} || '';
+            const trivyFixedDetails = ${{ toJSON(needs.trivy_scan.outputs.trivy_fixed_details) }} || '';
+            const trivyImageAddedDetails = ${{ toJSON(needs.trivy_scan.outputs.trivy_image_added_details) }} || '';
+            const trivyImageFixedDetails = ${{ toJSON(needs.trivy_scan.outputs.trivy_image_fixed_details) }} || '';
             
             const totalAdded = parseInt(gosecAdded) + parseInt(trivyAdded) + parseInt(trivyImageAdded);
             const totalFixed = parseInt(gosecFixed) + parseInt(trivyFixed) + parseInt(trivyImageFixed);
