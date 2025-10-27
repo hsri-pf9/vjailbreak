@@ -6,6 +6,21 @@ on:
       - main
       - harsh/soc2
   pull_request:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Release tag to scan'
+        required: true
+        type: string
+
+env:
+  QCOW2_IMG: ${{ vars.REGISTRY || 'quay.io' }}/${{ vars.REPO || 'platform9' }}/vjailbreak
+  UI_IMG: ${{ vars.REGISTRY || 'quay.io' }}/${{ vars.REPO || 'platform9' }}/vjailbreak-ui
+  V2V_HELPER_IMG: ${{ vars.REGISTRY || 'quay.io' }}/${{ vars.REPO || 'platform9' }}/vjailbreak-v2v-helper
+  CONTROLLER_IMG: ${{ vars.REGISTRY || 'quay.io' }}/${{ vars.REPO || 'platform9' }}/vjailbreak-controller
+  VPWNED_IMG: ${{ vars.REGISTRY || 'quay.io' }}/${{ vars.REPO || 'platform9' }}/vjailbreak-vpwned
 
 jobs:
   setup:
@@ -15,9 +30,77 @@ jobs:
       go-version: '1.22'
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Export Go Version
         run: echo "go-version=1.22" >> $GITHUB_OUTPUT
+
+  check-and-wait-for-artifacts:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.get_tag.outputs.tag }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set Tag for Release Event
+        if: github.event_name == 'release'
+        id: set_release_tag
+        run: echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+
+      - name: Set Tag for Manual Trigger
+        if: github.event_name == 'workflow_dispatch'
+        id: set_manual_tag
+        run: echo "tag=${{ github.event.inputs.release_tag }}" >> $GITHUB_OUTPUT
+
+      - name: Set Tag for Push Event
+        if: github.event_name == 'push'
+        id: set_push_tag
+        run: |
+          GIT_SHA=$(git rev-parse --short HEAD)
+          BUILD_VERSION=${{ github.run_number }}
+          echo "tag=${BUILD_VERSION}-${GIT_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Set Tag for PR Event  
+        if: github.event_name == 'pull_request'
+        id: set_pr_tag
+        run: |
+          GIT_SHA=$(git rev-parse --short HEAD)
+          BUILD_VERSION=${{ github.run_number }}
+          echo "tag=${BUILD_VERSION}-${GIT_SHA}" >> $GITHUB_OUTPUT
+
+      - name: Get Tag
+        id: get_tag
+        run: echo "tag=${{ steps.set_release_tag.outputs.tag || steps.set_manual_tag.outputs.tag || steps.set_push_tag.outputs.tag || steps.set_pr_tag.outputs.tag }}" >> $GITHUB_OUTPUT
+
+      - name: Install Dependencies
+        run: |
+          curl -LO https://github.com/oras-project/oras/releases/download/v1.2.1/oras_1.2.1_linux_amd64.tar.gz
+          sudo tar -C /usr/local/bin/ -xzvf oras_1.2.1_linux_amd64.tar.gz oras
+
+      - name: Wait and check for QCOW image (Max 45 mins)
+        run: |
+          RELEASE_TAG="${{ steps.get_tag.outputs.tag }}"
+          QCOW_IMAGE_URL="${{ env.QCOW2_IMG }}:${RELEASE_TAG}"
+
+          echo "Waiting for artifact to be available at $QCOW_IMAGE_URL"
+
+          for i in $(seq 1 135); do
+            if oras manifest fetch "$QCOW_IMAGE_URL" &>/dev/null; then
+              echo ""
+              echo "Success! Artifact found."
+              exit 0
+            fi
+
+            if [[ $i -eq 135 ]]; then
+              break
+            fi
+
+            sleep 20
+          done
+
+          echo ""
+          echo "Artifact not found after 45 minutes. Failing workflow."
+          exit 1
 
   gosec_scan:
     name: Gosec Security Scan (Full)
@@ -30,15 +113,17 @@ jobs:
       gosec_added_count: ${{ steps.gosec_compare.outputs.added_count }}
       gosec_fixed_count: ${{ steps.gosec_compare.outputs.fixed_count }}
       gosec_baseline_method: ${{ steps.gosec_compare.outputs.baseline_method }}
+      gosec_added_details: ${{ steps.gosec_compare.outputs.added_details }}
+      gosec_fixed_details: ${{ steps.gosec_compare.outputs.fixed_details }}
     permissions:
       contents: write
       pull-requests: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: '${{ needs.setup.outputs.go-version }}'
 
@@ -81,6 +166,14 @@ jobs:
             | "* File: \(.file)\n  • Line: \(.line)\n  • Rule ID: \(.rule_id)\n  • Details: \(.details)\n  • Confidence: \(.confidence)\n  • Severity: \(.severity)\n"
           ' tmp/gosec-report.json >> tmp/pr-body.md
 
+      - name: Debug - List Available Artifacts
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          echo "Looking for artifacts from base SHA: ${{ github.event.pull_request.base.sha }}"
+          echo "Expected Gosec artifact: gosec-security-report-${{ github.event.pull_request.base.sha }}"
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+
       - name: Download Baseline Gosec Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
@@ -91,6 +184,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: security.yml
           branch: ${{ github.event.pull_request.base.ref }}
+          workflow_conclusion: ""
+          check_artifacts: true
+          if_no_artifact_found: warn
+          repo: ${{ github.repository }}
           search_artifacts: true
 
       - name: Compare Vulnerabilities with Baseline (PR only)
@@ -161,12 +258,84 @@ jobs:
           echo "Added vulnerabilities: $added_count"
           echo "Fixed vulnerabilities: $fixed_count"
           
+          # Generate detailed vulnerability lists
+          added_details=""
+          fixed_details=""
+          
+          if [[ -f "tmp/current-vulns.txt" && -f "tmp/baseline-vulns.txt" ]]; then
+            # Get added vulnerabilities with details
+            if [[ $added_count -gt 0 ]]; then
+              added_vulns=$(comm -23 tmp/current-vulns.txt tmp/baseline-vulns.txt)
+              added_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract file, line, rule_id from the identifier
+                  file_path=$(echo "$vuln_id" | cut -d':' -f1)
+                  line_num=$(echo "$vuln_id" | cut -d':' -f2)
+                  rule_id=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the report
+                  details=$(jq -r --arg file "$file_path" --arg line "$line_num" --arg rule "$rule_id" '
+                    .Issues[] | select(.file == $file and (.line | tostring) == $line and .rule_id == $rule and (.severity == "HIGH" or .severity == "CRITICAL")) | 
+                    "**File:** `\(.file)` (Line \(.line))\\n**Rule:** \(.rule_id)\\n**Severity:** \(.severity)\\n**Details:** \(.details)\\n"
+                  ' tmp/gosec-report.json)
+                  
+                  if [[ -n "$details" ]]; then
+                    added_details="${added_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$added_vulns"
+            fi
+            
+            # Get fixed vulnerabilities with details  
+            if [[ $fixed_count -gt 0 ]]; then
+              fixed_vulns=$(comm -13 tmp/current-vulns.txt tmp/baseline-vulns.txt)
+              fixed_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract file, line, rule_id from the identifier
+                  file_path=$(echo "$vuln_id" | cut -d':' -f1)
+                  line_num=$(echo "$vuln_id" | cut -d':' -f2)
+                  rule_id=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the baseline report
+                  baseline_report="baseline-reports/gosec-report.json"
+                  if [[ "$baseline_method" == "live_scan" ]]; then
+                    baseline_report="tmp/gosec-report-baseline.json"
+                  fi
+                  
+                  details=$(jq -r --arg file "$file_path" --arg line "$line_num" --arg rule "$rule_id" '
+                    .Issues[] | select(.file == $file and (.line | tostring) == $line and .rule_id == $rule and (.severity == "HIGH" or .severity == "CRITICAL")) | 
+                    "**File:** `\(.file)` (Line \(.line))\\n**Rule:** \(.rule_id)\\n**Severity:** \(.severity)\\n**Details:** \(.details)\\n"
+                  ' "$baseline_report")
+                  
+                  if [[ -n "$details" ]]; then
+                    fixed_details="${fixed_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$fixed_vulns"
+            fi
+          fi
+          
           # Set outputs
           echo "current_count=$current_count" >> "$GITHUB_OUTPUT"
           echo "baseline_count=$baseline_count" >> "$GITHUB_OUTPUT"
           echo "added_count=$added_count" >> "$GITHUB_OUTPUT"
           echo "fixed_count=$fixed_count" >> "$GITHUB_OUTPUT"
           echo "baseline_method=$baseline_method" >> "$GITHUB_OUTPUT"
+          
+          # Set detailed outputs (escape for GitHub Actions)
+          {
+            echo "added_details<<EOF"
+            echo -e "$added_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          
+          {
+            echo "fixed_details<<EOF"
+            echo -e "$fixed_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Display Gosec Vulnerability Report
         if: ${{ steps.scan.outputs.gosec_high_found == 'true' }}
@@ -203,7 +372,7 @@ jobs:
 
   trivy_scan:
     name: Trivy Security Scan (Full)
-    needs: setup
+    needs: [setup, check-and-wait-for-artifacts]
     runs-on: ubuntu-latest
     outputs:
       trivy_high_found: ${{ steps.scan.outputs.trivy_high_found }}
@@ -213,17 +382,21 @@ jobs:
       trivy_added_count: ${{ steps.trivy_compare.outputs.added_count }}
       trivy_fixed_count: ${{ steps.trivy_compare.outputs.fixed_count }}
       trivy_baseline_method: ${{ steps.trivy_compare.outputs.baseline_method }}
+      trivy_added_details: ${{ steps.trivy_compare.outputs.added_details }}
+      trivy_fixed_details: ${{ steps.trivy_compare.outputs.fixed_details }}
       trivy_image_current_count: ${{ steps.trivy_image_compare.outputs.current_count }}
       trivy_image_baseline_count: ${{ steps.trivy_image_compare.outputs.baseline_count }}
       trivy_image_added_count: ${{ steps.trivy_image_compare.outputs.added_count }}
       trivy_image_fixed_count: ${{ steps.trivy_image_compare.outputs.fixed_count }}
       trivy_image_baseline_method: ${{ steps.trivy_image_compare.outputs.baseline_method }}
+      trivy_image_added_details: ${{ steps.trivy_image_compare.outputs.added_details }}
+      trivy_image_fixed_details: ${{ steps.trivy_image_compare.outputs.fixed_details }}
     permissions:
       contents: write
       pull-requests: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Trivy
         run: |
@@ -278,6 +451,14 @@ jobs:
             | "* File: \($file)\n  • Vulnerability ID: \(.VulnerabilityID)\n  • Pkg: \(.PkgName) \(.InstalledVersion)\n  • Severity: \(.Severity)\n  • Title: \(.Title)\n"
           ' tmp/trivy-report.json >> tmp/pr-body.md
 
+      - name: Debug - List Available Trivy Artifacts
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          echo "Looking for Trivy artifacts from base SHA: ${{ github.event.pull_request.base.sha }}"
+          echo "Expected Trivy artifact: trivy-filesystem-report-${{ github.event.pull_request.base.sha }}"
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+
       - name: Download Baseline Trivy Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
@@ -288,6 +469,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: security.yml
           branch: ${{ github.event.pull_request.base.ref }}
+          workflow_conclusion: ""
+          check_artifacts: true
+          if_no_artifact_found: warn
+          repo: ${{ github.repository }}
           search_artifacts: true
 
       - name: Compare Trivy Vulnerabilities with Baseline (PR only)
@@ -410,12 +595,88 @@ jobs:
           echo "Added Trivy vulnerabilities: $added_count"
           echo "Fixed Trivy vulnerabilities: $fixed_count"
           
+          # Generate detailed vulnerability lists
+          added_details=""
+          fixed_details=""
+          
+          if [[ -f "tmp/current-trivy-vulns.txt" && -f "tmp/baseline-trivy-vulns.txt" ]]; then
+            # Get added vulnerabilities with details
+            if [[ $added_count -gt 0 ]]; then
+              added_vulns=$(comm -23 tmp/current-trivy-vulns.txt tmp/baseline-trivy-vulns.txt)
+              added_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract target, vuln_id, pkg_name from the identifier
+                  target=$(echo "$vuln_id" | cut -d':' -f1)
+                  vuln_cve=$(echo "$vuln_id" | cut -d':' -f2)
+                  pkg_name=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the report
+                  details=$(jq -r --arg target "$target" --arg vuln "$vuln_cve" --arg pkg "$pkg_name" '
+                    (.Results // []) | .[] | select(.Target == $target) | 
+                    (.Vulnerabilities? // []) | .[] | 
+                    select(.VulnerabilityID == $vuln and .PkgName == $pkg and (.Severity == "HIGH" or .Severity == "CRITICAL")) | 
+                    "**Target:** `\(.Target // $target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+                  ' tmp/trivy-report.json)
+                  
+                  if [[ -n "$details" ]]; then
+                    added_details="${added_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$added_vulns"
+            fi
+            
+            # Get fixed vulnerabilities with details  
+            if [[ $fixed_count -gt 0 ]]; then
+              fixed_vulns=$(comm -13 tmp/current-trivy-vulns.txt tmp/baseline-trivy-vulns.txt)
+              fixed_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract target, vuln_id, pkg_name from the identifier
+                  target=$(echo "$vuln_id" | cut -d':' -f1)
+                  vuln_cve=$(echo "$vuln_id" | cut -d':' -f2)
+                  pkg_name=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the baseline report
+                  baseline_report="baseline-reports/trivy-report.json"
+                  if [[ "$baseline_method" == "live_scan" ]]; then
+                    baseline_report="tmp/trivy-report-baseline.json"
+                  fi
+                  
+                  details=$(jq -r --arg target "$target" --arg vuln "$vuln_cve" --arg pkg "$pkg_name" '
+                    (.Results // []) | .[] | select(.Target == $target) | 
+                    (.Vulnerabilities? // []) | .[] | 
+                    select(.VulnerabilityID == $vuln and .PkgName == $pkg and (.Severity == "HIGH" or .Severity == "CRITICAL")) | 
+                    "**Target:** `\(.Target // $target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+                  ' "$baseline_report")
+                  
+                  if [[ -n "$details" ]]; then
+                    fixed_details="${fixed_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$fixed_vulns"
+            fi
+          fi
+          
           # Set outputs
           echo "current_count=$current_count" >> "$GITHUB_OUTPUT"
           echo "baseline_count=$baseline_count" >> "$GITHUB_OUTPUT"
           echo "added_count=$added_count" >> "$GITHUB_OUTPUT"
           echo "fixed_count=$fixed_count" >> "$GITHUB_OUTPUT"
           echo "baseline_method=$baseline_method" >> "$GITHUB_OUTPUT"
+          
+          # Set detailed outputs (escape for GitHub Actions)
+          {
+            echo "added_details<<EOF"
+            echo -e "$added_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          
+          {
+            echo "fixed_details<<EOF"
+            echo -e "$fixed_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Display Trivy Vulnerability Report
         if: ${{ steps.scan.outputs.trivy_high_found == 'true' }}
@@ -446,42 +707,43 @@ jobs:
           base: ${{ github.ref_name }}
           delete-branch: true
 
-      - name: Wait for artifacts from packer workflow
+
+      - name: Setup ORAS
+        uses: oras-project/setup-oras@v1.2.1
+
+      - name: Download Docker images using ORAS
+        continue-on-error: true
         run: |
-          echo "Waiting for Docker image artifacts to be available..."
-          sleep 60
-
-      - name: Download UI Docker image artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          name: ui-docker-image
-          path: ./docker-images
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download V2V Helper Docker image artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          name: v2v-docker-image
-          path: ./docker-images
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download Controller Docker image artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          name: controller-docker-image
-          path: ./docker-images
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download VPWNED Docker image artifact
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          name: vpwned-docker-image
-          path: ./docker-images
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG="${{ needs.check-and-wait-for-artifacts.outputs.tag }}"
+          
+          echo "Downloading Docker images with tag: $RELEASE_TAG using ORAS"
+          
+          # Create directory for images
+          mkdir -p ./docker-images
+          
+          # Download UI image
+          echo "Downloading UI image: ${{ env.UI_IMG }}:${RELEASE_TAG}"
+          cd ./docker-images
+          oras pull "${{ env.UI_IMG }}:${RELEASE_TAG}" || echo "Failed to download UI image"
+          
+          # Download V2V Helper image
+          echo "Downloading V2V Helper image: ${{ env.V2V_HELPER_IMG }}:${RELEASE_TAG}"
+          oras pull "${{ env.V2V_HELPER_IMG }}:${RELEASE_TAG}" || echo "Failed to download V2V Helper image"
+          
+          # Download Controller image
+          echo "Downloading Controller image: ${{ env.CONTROLLER_IMG }}:${RELEASE_TAG}"
+          oras pull "${{ env.CONTROLLER_IMG }}:${RELEASE_TAG}" || echo "Failed to download Controller image"
+          
+          # Download VPWNED image
+          echo "Downloading VPWNED image: ${{ env.VPWNED_IMG }}:${RELEASE_TAG}"
+          oras pull "${{ env.VPWNED_IMG }}:${RELEASE_TAG}" || echo "Failed to download VPWNED image"
+          
+          cd ..
+          echo "ORAS image download completed"
+          
+          # List downloaded files for verification
+          echo "Downloaded files:"
+          ls -la ./docker-images/
 
       - name: Scan Docker Images
         id: image_scan
@@ -574,6 +836,14 @@ jobs:
             | "* **Image**: \($target)\n  • **Vulnerability ID**: \(.VulnerabilityID)\n  • **Package**: \(.PkgName) \(.InstalledVersion)\n  • **Severity**: \(.Severity)\n  • **Title**: \(.Title)\n"
           ' tmp/trivy-image-report.json >> tmp/pr-body-images.md
 
+      - name: Debug - List Available Trivy Image Artifacts
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          echo "Looking for Trivy Image artifacts from base SHA: ${{ github.event.pull_request.base.sha }}"
+          echo "Expected Trivy Image artifact: trivy-image-report-${{ github.event.pull_request.base.sha }}"
+          echo "Base branch: ${{ github.event.pull_request.base.ref }}"
+
       - name: Download Baseline Trivy Image Report (PR only)
         if: github.event_name == 'pull_request'
         continue-on-error: true
@@ -584,6 +854,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: security.yml
           branch: ${{ github.event.pull_request.base.ref }}
+          workflow_conclusion: ""
+          check_artifacts: true
+          if_no_artifact_found: warn
+          repo: ${{ github.repository }}
           search_artifacts: true
 
       - name: Compare Trivy Image Vulnerabilities with Baseline (PR only)
@@ -668,12 +942,96 @@ jobs:
           echo "Added Trivy Image vulnerabilities: $added_count"
           echo "Fixed Trivy Image vulnerabilities: $fixed_count"
           
+          # Generate detailed vulnerability lists
+          added_details=""
+          fixed_details=""
+          
+          if [[ -f "tmp/current-image-vulns.txt" && -f "tmp/baseline-image-vulns.txt" ]]; then
+            # Get added vulnerabilities with details
+            if [[ $added_count -gt 0 ]]; then
+              added_vulns=$(comm -23 tmp/current-image-vulns.txt tmp/baseline-image-vulns.txt)
+              added_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract target, vuln_id, pkg_name from the identifier
+                  target=$(echo "$vuln_id" | cut -d':' -f1)
+                  vuln_cve=$(echo "$vuln_id" | cut -d':' -f2)
+                  pkg_name=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the report
+                  details=$(jq -r --arg target "$target" --arg vuln "$vuln_cve" --arg pkg "$pkg_name" '
+                    (.Results // []) | .[] | select(.Target == $target) | 
+                    (.Vulnerabilities? // []) | .[] | 
+                    select(.VulnerabilityID == $vuln and .PkgName == $pkg and (.Severity == "HIGH" or .Severity == "CRITICAL")) | 
+                    "**Image:** `\(.Target // $target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+                  ' tmp/trivy-image-report.json)
+                  
+                  if [[ -n "$details" ]]; then
+                    added_details="${added_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$added_vulns"
+            fi
+            
+            # Get fixed vulnerabilities with details  
+            if [[ $fixed_count -gt 0 ]]; then
+              fixed_vulns=$(comm -13 tmp/current-image-vulns.txt tmp/baseline-image-vulns.txt)
+              fixed_details=""
+              while IFS= read -r vuln_id; do
+                if [[ -n "$vuln_id" ]]; then
+                  # Extract target, vuln_id, pkg_name from the identifier
+                  target=$(echo "$vuln_id" | cut -d':' -f1)
+                  vuln_cve=$(echo "$vuln_id" | cut -d':' -f2)
+                  pkg_name=$(echo "$vuln_id" | cut -d':' -f3)
+                  
+                  # Get full details from the baseline report
+                  details=$(jq -r --arg target "$target" --arg vuln "$vuln_cve" --arg pkg "$pkg_name" '
+                    (.Results // []) | .[] | select(.Target == $target) | 
+                    (.Vulnerabilities? // []) | .[] | 
+                    select(.VulnerabilityID == $vuln and .PkgName == $pkg and (.Severity == "HIGH" or .Severity == "CRITICAL")) | 
+                    "**Image:** `\(.Target // $target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+                  ' baseline-reports/trivy-image-report.json)
+                  
+                  if [[ -n "$details" ]]; then
+                    fixed_details="${fixed_details}${details}\\n"
+                  fi
+                fi
+              done <<< "$fixed_vulns"
+            fi
+          elif [[ "$baseline_method" == "no_baseline" && $added_count -gt 0 ]]; then
+            # When no baseline, all current vulnerabilities are treated as "added"
+            added_details=""
+            jq -r '
+              (.Results // []) | .[] | .Target as $target | 
+              (.Vulnerabilities? // []) | .[] | 
+              select(.Severity == "HIGH" or .Severity == "CRITICAL") | 
+              "**Image:** `\($target)`\\n**Package:** \(.PkgName) \(.InstalledVersion)\\n**Vulnerability:** \(.VulnerabilityID)\\n**Severity:** \(.Severity)\\n**Title:** \(.Title)\\n"
+            ' tmp/trivy-image-report.json | while IFS= read -r details; do
+              if [[ -n "$details" ]]; then
+                added_details="${added_details}${details}\\n"
+              fi
+            done
+          fi
+          
           # Set outputs
           echo "current_count=$current_count" >> "$GITHUB_OUTPUT"
           echo "baseline_count=$baseline_count" >> "$GITHUB_OUTPUT"
           echo "added_count=$added_count" >> "$GITHUB_OUTPUT"
           echo "fixed_count=$fixed_count" >> "$GITHUB_OUTPUT"
           echo "baseline_method=$baseline_method" >> "$GITHUB_OUTPUT"
+          
+          # Set detailed outputs (escape for GitHub Actions)
+          {
+            echo "added_details<<EOF"
+            echo -e "$added_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+          
+          {
+            echo "fixed_details<<EOF"
+            echo -e "$fixed_details"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Display Trivy Image Vulnerability Report
         if: ${{ steps.image_scan.outputs.trivy_image_high_found == 'true' }}
@@ -737,6 +1095,14 @@ jobs:
             const trivyMethod = '${{ needs.trivy_scan.outputs.trivy_baseline_method }}' || 'none';
             const trivyImageMethod = '${{ needs.trivy_scan.outputs.trivy_image_baseline_method }}' || 'none';
             
+            // Get detailed vulnerability information (safely encoded)
+            const gosecAddedDetails = ${{ toJSON(needs.gosec_scan.outputs.gosec_added_details) }} || '';
+            const gosecFixedDetails = ${{ toJSON(needs.gosec_scan.outputs.gosec_fixed_details) }} || '';
+            const trivyAddedDetails = ${{ toJSON(needs.trivy_scan.outputs.trivy_added_details) }} || '';
+            const trivyFixedDetails = ${{ toJSON(needs.trivy_scan.outputs.trivy_fixed_details) }} || '';
+            const trivyImageAddedDetails = ${{ toJSON(needs.trivy_scan.outputs.trivy_image_added_details) }} || '';
+            const trivyImageFixedDetails = ${{ toJSON(needs.trivy_scan.outputs.trivy_image_fixed_details) }} || '';
+            
             const totalAdded = parseInt(gosecAdded) + parseInt(trivyAdded) + parseInt(trivyImageAdded);
             const totalFixed = parseInt(gosecFixed) + parseInt(trivyFixed) + parseInt(trivyImageFixed);
             const totalCurrent = parseInt(gosecCurrent) + parseInt(trivyCurrent) + parseInt(trivyImageCurrent);
@@ -798,6 +1164,44 @@ jobs:
             - **📦 artifact**: Used stored report from main branch
             - **🔄 live_scan**: Scanned base branch in real-time  
             - **⚠️ no_baseline**: No baseline available (all vulnerabilities treated as new)
+            
+            ${totalAdded > 0 ? `
+            ### 🚨 Added Vulnerabilities
+            
+            ${parseInt(gosecAdded) > 0 ? `
+            #### Gosec (Static Analysis) - ${gosecAdded} Added
+            ${gosecAddedDetails || '*No detailed information available*'}
+            ` : ''}
+            
+            ${parseInt(trivyAdded) > 0 ? `
+            #### Trivy (Dependencies) - ${trivyAdded} Added
+            ${trivyAddedDetails || '*No detailed information available*'}
+            ` : ''}
+            
+            ${parseInt(trivyImageAdded) > 0 ? `
+            #### Trivy (Docker Images) - ${trivyImageAdded} Added
+            ${trivyImageAddedDetails || '*No detailed information available*'}
+            ` : ''}
+            ` : ''}
+            
+            ${totalFixed > 0 ? `
+            ### 🎉 Fixed Vulnerabilities
+            
+            ${parseInt(gosecFixed) > 0 ? `
+            #### Gosec (Static Analysis) - ${gosecFixed} Fixed
+            ${gosecFixedDetails || '*No detailed information available*'}
+            ` : ''}
+            
+            ${parseInt(trivyFixed) > 0 ? `
+            #### Trivy (Dependencies) - ${trivyFixed} Fixed
+            ${trivyFixedDetails || '*No detailed information available*'}
+            ` : ''}
+            
+            ${parseInt(trivyImageFixed) > 0 ? `
+            #### Trivy (Docker Images) - ${trivyImageFixed} Fixed
+            ${trivyImageFixedDetails || '*No detailed information available*'}
+            ` : ''}
+            ` : ''}
             
             ---
             *Only HIGH and CRITICAL severity vulnerabilities are tracked*

@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"bufio"
+	"crypto/rand"
 	"fmt"
 	"log"
-	"math/rand"
+	"math/big"
 	"os"
 	"os/exec"
 	"strings"
@@ -72,7 +73,13 @@ func randSeq(n int) string {
 	var letters = []rune("abcdefghijklmnopqrstuvwxyz")
 	b := make([]rune, n)
 	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
+		n, err := rand.Int(rand.Reader, big.NewInt(int64(len(letters))))
+		if err != nil {
+			// Fallback to a simple approach if crypto/rand fails
+			b[i] = letters[i%len(letters)]
+		} else {
+			b[i] = letters[n.Int64()]
+		}
 	}
 	return string(b)
 }
